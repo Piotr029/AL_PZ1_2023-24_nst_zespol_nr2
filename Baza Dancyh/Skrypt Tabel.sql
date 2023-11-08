@@ -85,8 +85,7 @@ ALTER TABLE magazyn ADD CONSTRAINT magazyn_pk PRIMARY KEY ( id );
 
 CREATE TABLE magazyn_miejsca ( 
     id                 NUMBER NOT NULL, 
-    nazwa              CHAR(20 CHAR), 
-    id_magazynu NUMBER,
+    nazwa              CHAR(20 CHAR),
     magazyn_id  NUMBER NOT NULL 
 );
 
