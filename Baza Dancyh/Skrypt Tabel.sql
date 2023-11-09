@@ -114,7 +114,7 @@ ALTER TABLE miary ADD CONSTRAINT miary_pk PRIMARY KEY ( id );
 
 CREATE TABLE miejsce_pozycja (
     id                 NUMBER NOT NULL,
-    nazwa              NUMBER,
+    nazwa              CHAR(15 CHAR),
     magazyn_miejsca_id NUMBER NOT NULL
 );;
 
