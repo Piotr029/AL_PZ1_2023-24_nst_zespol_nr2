@@ -375,4 +375,3 @@ ALTER TABLE miejsce_pozycja
     ADD CONSTRAINT miejsca_magazyn_miejsca_fk FOREIGN KEY ( magazyn_miejsca_id )
         REFERENCES magazyn_miejsca ( id );
 
-
