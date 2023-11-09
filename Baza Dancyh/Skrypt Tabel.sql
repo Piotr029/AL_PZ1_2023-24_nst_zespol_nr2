@@ -115,7 +115,6 @@ ALTER TABLE miary ADD CONSTRAINT miary_pk PRIMARY KEY ( id );
 CREATE TABLE miejsce_pozycja (
     id                 NUMBER NOT NULL,
     nazwa              NUMBER,
-    dodatkowe_info     CHAR(100 CHAR),
     magazyn_miejsca_id NUMBER NOT NULL
 );;
 
@@ -130,12 +129,10 @@ CREATE TABLE pilnosc (
 ALTER TABLE pilnosc ADD CONSTRAINT pilnosc_pk PRIMARY KEY ( id );
 
 CREATE TABLE pozycja_czesci ( 
-    id_pozycji         NUMBER, 
-    id_czesci          NUMBER, 
+    miejsce_pozycja_id NUMBER NOT NULL,
+    dodatkowe_info     CHAR(100 CHAR), 
+    częsci_id          NUMBER NOT NULL,
     ilosc              FLOAT, 
-    id_miary           NUMBER, 
-    miejsce_pozycja_id NUMBER NOT NULL, 
-    częsci_id          NUMBER NOT NULL, 
     miary_id           NUMBER NOT NULL 
 );
 
