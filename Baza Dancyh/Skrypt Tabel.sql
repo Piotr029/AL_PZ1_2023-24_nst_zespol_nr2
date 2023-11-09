@@ -184,7 +184,8 @@ ALTER TABLE stany ADD CONSTRAINT stany_pk PRIMARY KEY ( id );
 
 CREATE TABLE typy_czesci ( 
     id    NUMBER NOT NULL, 
-    nazwa CHAR(10 CHAR) 
+    nazwa CHAR(15 CHAR),
+    pod_nazwa CHAR(15 CHAR)
 );
 
 ALTER TABLE typy_czesci ADD CONSTRAINT typy_czesci_pk PRIMARY KEY ( id );
