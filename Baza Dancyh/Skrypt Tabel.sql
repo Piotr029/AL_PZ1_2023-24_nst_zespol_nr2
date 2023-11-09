@@ -116,7 +116,6 @@ CREATE TABLE miejsce_pozycja (
     id                 NUMBER NOT NULL,
     nazwa              NUMBER,
     dodatkowe_info     CHAR(100 CHAR),
-    id_miejsca         NUMBER,
     magazyn_miejsca_id NUMBER NOT NULL
 );;
 
