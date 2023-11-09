@@ -12,14 +12,14 @@ ALTER TABLE czesci_maszyny_pt ADD CONSTRAINT czesci_maszyny_pt_id_czesci_un UNIQ
 
 CREATE TABLE częsci ( 
     id             NUMBER NOT NULL, 
-    nazwa          CLOB, 
-    id_typu        NUMBER, 
+    nazwa          CLOB,
+    typy_czesci_id NUMBER NOT NULL, 
     parametr_1     CHAR(15 CHAR), 
     parametr_2     CHAR(15 CHAR), 
     parametr_3     CHAR(15 CHAR), 
     zdjecie        BLOB, 
-    link_przyklad  CLOB, 
-    typy_czesci_id NUMBER NOT NULL 
+    link_przyklad  CLOB 
+
 );
 
 ALTER TABLE częsci ADD CONSTRAINT częsci_pk PRIMARY KEY ( id );
