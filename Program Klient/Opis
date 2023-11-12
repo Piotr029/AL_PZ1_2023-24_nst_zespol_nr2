@@ -1,1 +1,3 @@
-
+przyklad_klient.py
+      Prosty przyklad jak zrealizowac poloczenie i przesyl danych klient-serwer od strony klienta, program od strony serwera w innym folderze
+      Dokladniejszy opis jest w programie przyklad przyklad_serwera.py
