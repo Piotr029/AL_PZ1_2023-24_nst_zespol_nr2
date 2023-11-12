@@ -1,1 +1,11 @@
+przyklad_laczenia_zBD.py:
+        Pokazuje prosty przyklad z komentarzami jak poloczyc sie z baza danych i otrzymac od niej dane
 
+przykład_serwera.py:
+        Pokazuje prosty przykład jak stworzyc polocznie klient-serwer od strony serwera
+        Uzywa bilioteki socket - do poloczen, i threading- to rownoleglej pracy jak wielu klientow sie loczy jednosczesnie(tak na prawde
+                                to nie tyle rownolegla praca a mozliwosc rownolegloego kolejkowania polecen do wykonania
+                                ale najwazniejsze ze pozwala rownoczensie obsluge kilku klientow)
+        Przyklad uzywa ip lokalnego i to przetestowalem, udalo mi sie poloczyc i wysylac jednoczesnie informacje miedzy:
+                  serwerem - moj laptop, a klientA - komp stacjonarny, klientB - laptop mojego ojca
+        Po zmianie SERWER_IP na 0.0.0.0 wg chatbota serwer bedzie nasluchiwal po internecie i pozwoli to na polocznie po internecie a nie lokoalne - NIE TESTOWANE
