@@ -3,26 +3,26 @@ CREATE TABLE czesci_maszyny_pt (
     id_maszyny NUMBER, 
     id_czesci  NUMBER, 
     maszyny_id NUMBER NOT NULL, 
-    częsci_id  NUMBER NOT NULL 
+    czesci_id  NUMBER NOT NULL 
 );
 
 ALTER TABLE czesci_maszyny_pt ADD CONSTRAINT czesci_maszyny_pt_id_maszyny_un UNIQUE ( id_maszyny );
 
 ALTER TABLE czesci_maszyny_pt ADD CONSTRAINT czesci_maszyny_pt_id_czesci_un UNIQUE ( id_czesci );
 
-CREATE TABLE częsci ( 
+CREATE TABLE czesci ( 
     id             NUMBER NOT NULL, 
-    nazwa          CLOB,
+    nazwa          CHAR(30),
     typy_czesci_id NUMBER NOT NULL, 
     parametr_1     CHAR(15 CHAR), 
     parametr_2     CHAR(15 CHAR), 
     parametr_3     CHAR(15 CHAR), 
-    zdjecie        BLOB, 
-    link_przyklad  CLOB 
+    zdjecie        CHAR(255), 
+    link_przyklad  CHAR(255) 
 
 );
 
-ALTER TABLE częsci ADD CONSTRAINT częsci_pk PRIMARY KEY ( id );
+ALTER TABLE czesci ADD CONSTRAINT czesci_pk PRIMARY KEY ( id );
 
 CREATE TABLE dzienik_napraw ( 
     id               NUMBER NOT NULL, 
@@ -30,7 +30,7 @@ CREATE TABLE dzienik_napraw (
     id_usterki       NUMBER, 
     data_wystopienia DATE, 
     id_naprawil      NUMBER, 
-    dodatkowe_info   CLOB, 
+    dodatkowe_info   CHAR(255), 
     usterka_id       NUMBER NOT NULL, 
     uzytkownik_id    NUMBER NOT NULL, 
     maszyny_id       NUMBER NOT NULL 
@@ -61,7 +61,7 @@ CREATE TABLE historia_zmian (
     id_uzytkownika     NUMBER, 
     dodatkowe_info     CLOB, 
     miejsce_pozycja_id NUMBER NOT NULL, 
-    częsci_id          NUMBER NOT NULL, 
+    czesci_id          NUMBER NOT NULL, 
     rodzaj_zmiany_id   NUMBER NOT NULL, 
     uzytkownik_id      NUMBER NOT NULL 
 );
@@ -116,7 +116,7 @@ CREATE TABLE miejsce_pozycja (
     id                 NUMBER NOT NULL,
     nazwa              CHAR(15 CHAR),
     magazyn_miejsca_id NUMBER NOT NULL
-);;
+);
 
 ALTER TABLE miejsce_pozycja ADD CONSTRAINT miejsce_pozycja_pk PRIMARY KEY ( id );
 
@@ -131,7 +131,7 @@ ALTER TABLE pilnosc ADD CONSTRAINT pilnosc_pk PRIMARY KEY ( id );
 CREATE TABLE pozycja_czesci ( 
     miejsce_pozycja_id NUMBER NOT NULL,
     dodatkowe_info     CHAR(100 CHAR), 
-    częsci_id          NUMBER NOT NULL,
+    czesci_id          NUMBER NOT NULL,
     ilosc              FLOAT, 
     miary_id           NUMBER NOT NULL 
 );
@@ -154,7 +154,7 @@ CREATE TABLE przeglady (
     id_maszyny     NUMBER, 
     id_uzytkownika NUMBER,    
     data_wykonania           DATE, 
-    raport         BLOB, 
+    raport         CHAR(255), 
     uzytkownik_id  NUMBER NOT NULL, 
     maszyny_id     NUMBER NOT NULL 
 );
@@ -245,22 +245,22 @@ CREATE TABLE zamowienia (
     id_miary            NUMBER, 
     data_dostarczenia   DATE, 
     miary_id            NUMBER NOT NULL, 
-    częsci_id           NUMBER NOT NULL, 
+    czesci_id           NUMBER NOT NULL, 
     etapy_zamowienia_id NUMBER NOT NULL 
 );
 
 ALTER TABLE zamowienia ADD CONSTRAINT zamowienia_pk PRIMARY KEY ( id );
 
 ALTER TABLE czesci_maszyny_pt 
-    ADD CONSTRAINT czesci_maszyny_pt_częsci_fk FOREIGN KEY ( częsci_id ) 
-        REFERENCES częsci ( id );
+    ADD CONSTRAINT czesci_maszyny_pt_czesci_fk FOREIGN KEY ( czesci_id ) 
+        REFERENCES czesci ( id );
 
 ALTER TABLE czesci_maszyny_pt 
     ADD CONSTRAINT czesci_maszyny_pt_maszyny_fk FOREIGN KEY ( maszyny_id ) 
         REFERENCES maszyny ( id );
 
-ALTER TABLE częsci 
-    ADD CONSTRAINT częsci_typy_czesci_fk FOREIGN KEY ( typy_czesci_id ) 
+ALTER TABLE czesci 
+    ADD CONSTRAINT czesci_typy_czesci_fk FOREIGN KEY ( typy_czesci_id ) 
         REFERENCES typy_czesci ( id );
 
 ALTER TABLE dzienik_napraw 
@@ -276,8 +276,8 @@ ALTER TABLE dzienik_napraw
         REFERENCES uzytkownik ( id );
 
 ALTER TABLE historia_zmian 
-    ADD CONSTRAINT historia_zmian_częsci_fk FOREIGN KEY ( częsci_id ) 
-        REFERENCES częsci ( id );
+    ADD CONSTRAINT historia_zmian_czesci_fk FOREIGN KEY ( czesci_id ) 
+        REFERENCES czesci ( id );
 
 ALTER TABLE historia_zmian 
     ADD CONSTRAINT miejsce_pozycja_fk FOREIGN KEY ( miejsce_pozycja_id ) 
@@ -293,7 +293,7 @@ ALTER TABLE historia_zmian
 
 ALTER TABLE magazyn_miejsca
     ADD CONSTRAINT magazyn_miejsca_magazyn_fk FOREIGN KEY ( magazyn_id )
-        REFERENCES magazyn ( id );;
+        REFERENCES magazyn ( id );
 
 ALTER TABLE maszyny 
     ADD CONSTRAINT maszyny_stany_fk FOREIGN KEY ( stany_id ) 
@@ -304,8 +304,8 @@ ALTER TABLE maszyny
         REFERENCES typy_maszyn ( id );
 
 ALTER TABLE pozycja_czesci 
-    ADD CONSTRAINT pozycja_czesci_częsci_fk FOREIGN KEY ( częsci_id ) 
-        REFERENCES częsci ( id );
+    ADD CONSTRAINT pozycja_czesci_czesci_fk FOREIGN KEY ( czesci_id ) 
+        REFERENCES czesci ( id );
 
 ALTER TABLE pozycja_czesci 
     ADD CONSTRAINT pozycja_czesci_miary_fk FOREIGN KEY ( miary_id ) 
@@ -360,8 +360,8 @@ ALTER TABLE zadania
         REFERENCES uzytkownik ( id );
 
 ALTER TABLE zamowienia 
-    ADD CONSTRAINT zamowienia_częsci_fk FOREIGN KEY ( częsci_id ) 
-        REFERENCES częsci ( id );
+    ADD CONSTRAINT zamowienia_czesci_fk FOREIGN KEY ( czesci_id ) 
+        REFERENCES czesci ( id );
 
 ALTER TABLE zamowienia 
     ADD CONSTRAINT zamowienia_etapy_zamowienia_fk FOREIGN KEY ( etapy_zamowienia_id ) 
@@ -374,4 +374,3 @@ ALTER TABLE zamowienia
 ALTER TABLE miejsce_pozycja
     ADD CONSTRAINT miejsca_magazyn_miejsca_fk FOREIGN KEY ( magazyn_miejsca_id )
         REFERENCES magazyn_miejsca ( id );
-
