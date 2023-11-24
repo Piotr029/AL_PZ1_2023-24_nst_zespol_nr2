@@ -12,13 +12,13 @@ ALTER TABLE czesci_maszyny_pt ADD CONSTRAINT czesci_maszyny_pt_id_czesci_un UNIQ
 
 CREATE TABLE czesci ( 
     id             NUMBER NOT NULL, 
-    nazwa          CHAR(30),
+    nazwa          VARCHAR2(30 CHAR),
     typy_czesci_id NUMBER NOT NULL, 
-    parametr_1     CHAR(15 CHAR), 
-    parametr_2     CHAR(15 CHAR), 
-    parametr_3     CHAR(15 CHAR), 
-    zdjecie        CHAR(255), 
-    link_przyklad  CHAR(255) 
+    parametr_1     VARCHAR2(15 CHAR), 
+    parametr_2     VARCHAR2(15 CHAR), 
+    parametr_3     VARCHAR2(15 CHAR), 
+    zdjecie        VARCHAR2(255), 
+    link_przyklad  VARCHAR2(255) 
 
 );
 
@@ -30,7 +30,7 @@ CREATE TABLE dzienik_napraw (
     id_usterki       NUMBER, 
     data_wystopienia DATE, 
     id_naprawil      NUMBER, 
-    dodatkowe_info   CHAR(255), 
+    dodatkowe_info   VARCHAR2(255), 
     usterka_id       NUMBER NOT NULL, 
     uzytkownik_id    NUMBER NOT NULL, 
     maszyny_id       NUMBER NOT NULL 
@@ -40,14 +40,14 @@ ALTER TABLE dzienik_napraw ADD CONSTRAINT dzienik_napraw_pk PRIMARY KEY ( id );
 
 CREATE TABLE etapy_zadan ( 
     id    NUMBER NOT NULL, 
-    nazwa CHAR(20 CHAR) 
+    nazwa VARCHAR2(20 CHAR) 
 );
 
 ALTER TABLE etapy_zadan ADD CONSTRAINT etapy_pk PRIMARY KEY ( id );
 
 CREATE TABLE etapy_zamowienia ( 
     id    NUMBER NOT NULL, 
-    nazwa CHAR(15 CHAR) 
+    nazwa VARCHAR2(15 CHAR) 
 );
 
 ALTER TABLE etapy_zamowienia ADD CONSTRAINT etapy_zamowienia_pk PRIMARY KEY ( id );
@@ -78,14 +78,14 @@ ALTER TABLE kategorie_dostepu ADD CONSTRAINT kategorie_dostepu_pk PRIMARY KEY ( 
 
 CREATE TABLE magazyn ( 
     id                NUMBER NOT NULL, 
-    nazwa             CHAR(20 CHAR)
+    nazwa             VARCHAR2(20 CHAR)
 );
 
 ALTER TABLE magazyn ADD CONSTRAINT magazyn_pk PRIMARY KEY ( id );
 
 CREATE TABLE magazyn_miejsca ( 
     id                 NUMBER NOT NULL, 
-    nazwa              CHAR(20 CHAR),
+    nazwa              VARCHAR2(20 CHAR),
     magazyn_id  NUMBER NOT NULL 
 );
 
@@ -93,11 +93,11 @@ ALTER TABLE magazyn_miejsca ADD CONSTRAINT magazyn_miejsca_pk PRIMARY KEY ( id )
 
 CREATE TABLE maszyny ( 
     id             NUMBER NOT NULL, 
-    dluga_nazwa    CHAR(40 CHAR), 
-    krotka_nazwa   CHAR(8 CHAR), 
+    dluga_nazwa    VARCHAR2(40 CHAR), 
+    krotka_nazwa   VARCHAR2(8 CHAR), 
     id_typu        NUMBER, 
-    producent      CHAR(15 CHAR), 
-    Nr_Seryjny  CHAR(20 CHAR), 
+    producent      VARCHAR2(15 CHAR), 
+    Nr_Seryjny  VARCHAR2(20 CHAR), 
     id_stanu       NUMBER, 
     stany_id       NUMBER NOT NULL, 
     typy_maszyn_id NUMBER NOT NULL 
@@ -107,14 +107,14 @@ ALTER TABLE maszyny ADD CONSTRAINT maszyny_pk PRIMARY KEY ( id );
 
 CREATE TABLE miary ( 
     id    NUMBER NOT NULL, 
-    nazwa CHAR(10 CHAR) 
+    nazwa VARCHAR2(10 CHAR) 
 );
 
 ALTER TABLE miary ADD CONSTRAINT miary_pk PRIMARY KEY ( id );
 
 CREATE TABLE miejsce_pozycja (
     id                 NUMBER NOT NULL,
-    nazwa              CHAR(15 CHAR),
+    nazwa              VARCHAR2(15 CHAR),
     magazyn_miejsca_id NUMBER NOT NULL
 );
 
@@ -122,15 +122,15 @@ ALTER TABLE miejsce_pozycja ADD CONSTRAINT miejsce_pozycja_pk PRIMARY KEY ( id )
 
 CREATE TABLE pilnosc ( 
     id    NUMBER NOT NULL, 
-    nazwa CHAR(10 CHAR), 
-    tajne CHAR(1) 
+    nazwa VARCHAR2(10 CHAR), 
+    tajne VARCHAR2(1) 
 );
 
 ALTER TABLE pilnosc ADD CONSTRAINT pilnosc_pk PRIMARY KEY ( id );
 
 CREATE TABLE pozycja_czesci ( 
     miejsce_pozycja_id NUMBER NOT NULL,
-    dodatkowe_info     CHAR(100 CHAR), 
+    dodatkowe_info     VARCHAR2(100 CHAR), 
     czesci_id          NUMBER NOT NULL,
     ilosc              FLOAT, 
     miary_id           NUMBER NOT NULL 
@@ -140,7 +140,7 @@ CREATE TABLE problemy (
     id               NUMBER NOT NULL, 
     id_maszyny       NUMBER, 
     id_stanu         NUMBER, 
-    data             DATE, 
+    data_wystopienia            DATE, 
     opis             CLOB, 
     data_rozwiazania DATE, 
     stany_id         NUMBER NOT NULL, 
@@ -154,7 +154,7 @@ CREATE TABLE przeglady (
     id_maszyny     NUMBER, 
     id_uzytkownika NUMBER,    
     data_wykonania           DATE, 
-    raport         CHAR(255), 
+    raport         VARCHAR2(255), 
     uzytkownik_id  NUMBER NOT NULL, 
     maszyny_id     NUMBER NOT NULL 
 );
@@ -163,43 +163,43 @@ ALTER TABLE przeglady ADD CONSTRAINT przeglady_pk PRIMARY KEY ( id );
 
 CREATE TABLE rodzaj_zmiany ( 
     id    NUMBER NOT NULL, 
-    nazwa CHAR(10 CHAR) 
+    nazwa VARCHAR2(10 CHAR) 
 );
 
 ALTER TABLE rodzaj_zmiany ADD CONSTRAINT rodzaj_zmiany_pk PRIMARY KEY ( id );
 
 CREATE TABLE stanowiska ( 
     id    NUMBER NOT NULL, 
-    nazwa CHAR(40 CHAR) 
+    nazwa VARCHAR2(40 CHAR) 
 );
 
 ALTER TABLE stanowiska ADD CONSTRAINT stanowiska_pk PRIMARY KEY ( id );
 
 CREATE TABLE stany ( 
     id    NUMBER NOT NULL, 
-    nazwa CHAR(15 CHAR) 
+    nazwa VARCHAR2(15 CHAR) 
 );
 
 ALTER TABLE stany ADD CONSTRAINT stany_pk PRIMARY KEY ( id );
 
 CREATE TABLE typy_czesci ( 
     id    NUMBER NOT NULL, 
-    nazwa CHAR(15 CHAR),
-    pod_nazwa CHAR(15 CHAR)
+    nazwa VARCHAR2(15 CHAR),
+    pod_nazwa VARCHAR2(15 CHAR)
 );
 
 ALTER TABLE typy_czesci ADD CONSTRAINT typy_czesci_pk PRIMARY KEY ( id );
 
 CREATE TABLE typy_maszyn ( 
     id    NUMBER NOT NULL, 
-    nazwa CHAR(15 CHAR) 
+    nazwa VARCHAR2(15 CHAR) 
 );
 
 ALTER TABLE typy_maszyn ADD CONSTRAINT typy_maszyn_pk PRIMARY KEY ( id );
 
 CREATE TABLE usterka ( 
     id             NUMBER NOT NULL, 
-    kod            CHAR(20 CHAR), 
+    kod            VARCHAR2(20 CHAR), 
     id_typumaszyny NUMBER, 
     opis           CLOB, 
     rozwiazanie    CLOB, 
@@ -210,7 +210,7 @@ ALTER TABLE usterka ADD CONSTRAINT usterka_pk PRIMARY KEY ( id );
 
 CREATE TABLE uzytkownik ( 
     id                   NUMBER NOT NULL, 
-    nazwa                CHAR(30 CHAR), 
+    nazwa                VARCHAR2(30 CHAR), 
     id_stanowiska        NUMBER, 
     id_kategoria_dostepu NUMBER, 
     kategorie_dostepu_id NUMBER NOT NULL, 
