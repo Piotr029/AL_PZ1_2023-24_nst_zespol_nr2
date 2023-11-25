@@ -1,3 +1,11 @@
 przyklad_klient.py
       Prosty przyklad jak zrealizowac poloczenie i przesyl danych klient-serwer od strony klienta, program od strony serwera w innym folderze
       Dokladniejszy opis jest w programie przyklad przyklad_serwera.py
+
+test_UI.py: Ui z formularzem, do testowania wyswietlania/dodawania danych
+##########################################################################################
+klient.py: Glowny kod klienta
+      v1.0 - laczenie z serwerem wysylanie/odbeiranie danych, obsluga wyswietlania czesci i dodawania nowej czesci do bazy danych
+
+funkcje.py: Modul z funkcja wykorzystywanymi przez app klienta
+      v1.0 - funkcje wysylania/obierania danych, obsluga zapytan o czesci i typy czesci
