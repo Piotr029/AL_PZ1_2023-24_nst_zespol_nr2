@@ -1,6 +1,6 @@
 import socket       #bilioteka do twrzenia polaczen 
 import funkcje as f
-from UI import SimpleUI as Ui
+from test_UI import SimpleUI as Ui
 
 PORT = 5050         #na jakim portcie bedzie relizowane poloczenie
 SERVER_IP = "192.168.1.7"   #IP serwera, w tym przykladzie dzialamy w sieci lokalnej wiec ip lokalne
