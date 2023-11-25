@@ -9,3 +9,9 @@ przykład_serwera.py:
         Przyklad uzywa ip lokalnego i to przetestowalem, udalo mi sie poloczyc i wysylac jednoczesnie informacje miedzy:
                   serwerem - moj laptop, a klientA - komp stacjonarny, klientB - laptop mojego ojca
         Po zmianie SERWER_IP na 0.0.0.0 wg chatbota serwer bedzie nasluchiwal po internecie i pozwoli to na polocznie po internecie a nie lokoalne - NIE TESTOWANE
+############################################################################################################################################################
+serwer.py : Glowny kod programu serwera
+        v1.0 - Laczenie z bd/ laczenie z klientem/ obsluga zapytan o czesci i typy czesci
+
+obsluga.py: moduł obslugi zapytan bazy dancyh
+        v1.0 - obluga zapytan o dodanie, wyswietlenie czesci
