@@ -12,6 +12,8 @@ przykład_serwera.py:
 ############################################################################################################################################################
 serwer.py : Glowny kod programu serwera
         v1.0 - Laczenie z bd/ laczenie z klientem/ obsluga zapytan o czesci i typy czesci
+        v1.1 - dodano funkcjonalonosc usuwania/zmiany wybranych danych
 
 obsluga.py: moduł obslugi zapytan bazy dancyh
         v1.0 - obluga zapytan o dodanie, wyswietlenie czesci
+        v1.1 - dodano funkcjonalonosc usuwania/zmiany wybranych danych

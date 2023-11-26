@@ -5,6 +5,7 @@ import cx_Oracle as orc
 import obsluga as obs
 import pickle as pck
 
+VERSION = 1.1
 PORT = 5050 
 SERVER_IP = "192.168.1.7" #dom - 192.168.1.7  #Praca - 192.168.23.244
 ADR = (SERVER_IP, PORT) 
@@ -71,6 +72,12 @@ def obsluga_klienta(con, adr, db_conn):
             case 'POST':
                 p_dane = odbierz_dane(con)
                 if tabela == "CZESCI": g_dane = obs.Post_CZESCI(db_conn, p_dane)
+                
+            case 'DEL':
+                if tabela == "CZESCI": g_dane = obs.DEL_CZESCI(db_conn, atrybuty)
+                
+            case 'UPDT':
+                if tabela == "CZESCI": g_dane = obs.UPDT_CZESCI(db_conn, atrybuty)
         
         przeslij_dane(con, g_dane)
         
