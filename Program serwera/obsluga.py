@@ -1,5 +1,7 @@
 import cx_Oracle as orc
 
+VERSION = 1.1
+
 """_summary_
 """
 def obrob_dane(dane):
@@ -52,6 +54,26 @@ def Post_CZESCI(db_conn, dane):
     cursor.close()
     nowe_dane = GET_CZESCI(db_conn)
     return nowe_dane
-    
-        
+
+def DEL_CZESCI(db_conn, id):
+    cursor = db_conn.cursor()
+    cursor.callproc("usun_czesc", (id))
+    db_conn.commit()
+    cursor.close()
+    nowe_dane = GET_CZESCI(db_conn)
+    return nowe_dane
+
+def UPDT_CZESCI(db_conn, atrybuty:str):
+    lista = atrybuty.split(",")
+    print(lista)
+    id = int(lista[0])
+    nazwa_kolumny = lista[1]
+    nowa_wartosc = lista[2].lstrip(" ")
+    cursor = db_conn.cursor()
+    if nazwa_kolumny == "Typ": cursor.callproc("zmien_czesc_num", (id, "TYPY_CZESCI_ID", nowa_wartosc))
+    else: cursor.callproc("zmien_czesc_czar", (id, nazwa_kolumny, nowa_wartosc))
+    db_conn.commit()
+    cursor.close()
+    nowe_dane = GET_CZESCI(db_conn)
+    return nowe_dane
         
