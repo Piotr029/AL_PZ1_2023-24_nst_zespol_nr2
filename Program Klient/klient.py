@@ -2,6 +2,8 @@ import socket       #bilioteka do twrzenia polaczen
 import funkcje as f
 from test_UI import SimpleUI as Ui
 
+VERSION = 1.1
+
 PORT = 5050         #na jakim portcie bedzie relizowane poloczenie
 SERVER_IP = "192.168.1.7"   #IP serwera, w tym przykladzie dzialamy w sieci lokalnej wiec ip lokalne
 ADR = (SERVER_IP, PORT)     #adress naszego serwera
@@ -38,13 +40,17 @@ if TEST:
 def dodawanie_czesci(klient):
     nowa_czesc = ui.dane_z_formularza()
     ui.czesci = f.dodaj_czesc(klient, nowa_czesc)
-    ui.update_text()
-    
+    ui.update_tree()
+
+
 
 if __name__ == "__main__":
     ui = Ui()
     ui.typy = f.pobierz_Typy_Czesci(klient)
     ui.czesci = f.pobierz_czesci(klient)
+    ui.context_menu.add_command(label="Zmien", command=lambda: f.zmien_czesc(klient, ui))
+    ui.context_menu.add_command(label="Usun", command=lambda: f.usun_czesc(klient, ui))
+    ui.context_menu.add_command(label="Opcja 3")
     ui.button_dodaj.config(command=lambda: dodawanie_czesci(klient))
     
     ui.run()
