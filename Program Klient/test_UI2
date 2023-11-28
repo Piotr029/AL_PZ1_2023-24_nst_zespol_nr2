@@ -19,6 +19,8 @@ def update_main_area(option):
     # Clear the previous options
     for widget in options_frame.winfo_children():
         widget.destroy()
+    button_frame = tk.Frame(options_frame)
+    button_frame.pack(fill='x')
  # Create a table for the "Magazyn" option
     if option == "Magazyn":
         columns = ("nazwa_czesci", "id_czesci", "pozycja_czesci", "ilosc", "parametr1", "parametr2")
@@ -71,31 +73,71 @@ def update_main_area(option):
             table.insert('', 'end', values=row)
         table.pack(expand=True, fill='both')
 
-    # Example sub-options for other buttons
     elif option == "Maszyny":
-        options = ["Przeglądy", "Problemy", "Usterki"]
-    # Example sub-options for each button
-    if option == "Magazyn":
-        options = ["Dodaj", "Usuń", "Edytuj"]
-    elif option == "Maszyny":
-        options = ["Przeglądy", "Problemy", "Usterki"]
+        ttk.Button(button_frame, text="Dodaj maszynę", command=add_machine).pack(side='left', padx=10, pady=10)
+        ttk.Button(button_frame, text="Usuń maszynę", command=remove_machine).pack(side='left', padx=10, pady=10)
+
     elif option == "Dziennik Napraw":
-        options = ["Użytkownik", "Usterka", "Kalendarz"]
+        ttk.Button(button_frame, text="Dodaj przegląd", command=add_review).pack(side='left', padx=10, pady=10)
+        ttk.Button(button_frame, text="Edytuj przegląd", command=edit_review).pack(side='left', padx=10, pady=10)
+
+    elif option == "Użytkownik":
+        ttk.Button(button_frame, text="Dodaj użytkownika", command=add_user).pack(side='left', padx=10, pady=10)
+        ttk.Button(button_frame, text="Usuń użytkownika", command=remove_user).pack(side='left', padx=10, pady=10)
+
     elif option == "Zadania":
-        options = ["Zadanie 1", "Zadanie 2", "Zadanie 3"]
+        ttk.Button(button_frame, text="Dodaj zadanie", command=add_task).pack(side='left', padx=10, pady=10)
+        ttk.Button(button_frame, text="Usuń zadanie", command=remove_task).pack(side='left', padx=10, pady=10)
+
+   
 
     # Create buttons and calendar for sub-options
-    for opt in options:
+    for opt in options_frame:
          if opt == "Kalendarz":
                 cal = Calendar(options_frame, selectmode='day', year=2023, month=11, day=27, width=200, height=200)
                 cal.pack(side='left', padx=50, pady=50)  # Tutaj dostosuj marginesy i położenie
          else:
                 ttk.Button(options_frame, text=opt).pack(side='left', padx=10, pady=10)
+# Funkcje dla przycisków w sekcji Maszyny
+def add_machine():
+    # Logika dodawania maszyny
+    pass
+
+def remove_machine():
+    # Logika usuwania maszyny
+    pass
+
+# Funkcje dla przycisków w sekcji Dzienik naparw
+def add_review():
+    # Logika dodawania przeglądu
+    pass
+
+def edit_review():
+    # Logika edytowania przeglądu
+    pass
+
+# Funkcje dla przycisków w sekcji Użytkownik
+def add_user():
+    # Logika dodawania użytkownika
+    pass
+
+def remove_user():
+    # Logika usuwania użytkownika
+    pass
+
+# Funkcje dla przycisków w sekcji Zadania
+def add_task():
+    # Logika dodawania zadania
+    pass
+
+def remove_task():
+    # Logika usuwania zadania
+    pass                
    
 # Create buttons in the sidebar
 buttons = ["Magazyn", "Maszyny", "Dziennik Napraw", "Zadania"]
 for button in buttons:
-    ttk.Button(sidebar, text=button, command=lambda b=button: update_main_area(b)).pack(fill='x', padx=20, pady=20)
+    ttk.Button(sidebar, text=button, command=lambda b=button: update_main_area(b)).pack(fill='x', padx=25, pady=20)
 
 # Create a frame for the second-level options
 options_frame = tk.Frame(root, bg='#ffffff')
