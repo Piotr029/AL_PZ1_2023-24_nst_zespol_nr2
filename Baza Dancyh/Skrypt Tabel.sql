@@ -129,12 +129,15 @@ CREATE TABLE pilnosc (
 ALTER TABLE pilnosc ADD CONSTRAINT pilnosc_pk PRIMARY KEY ( id );
 
 CREATE TABLE pozycja_czesci ( 
+	id    				NUMBER NOT NULL,
     miejsce_pozycja_id NUMBER NOT NULL,
     dodatkowe_info     VARCHAR2(100 CHAR), 
     czesci_id          NUMBER NOT NULL,
     ilosc              FLOAT, 
     miary_id           NUMBER NOT NULL 
 );
+
+ALTER TABLE pozycja_czesci ADD CONSTRAINT pozycja_czesci_pk PRIMARY KEY ( id );
 
 CREATE TABLE problemy ( 
     id               NUMBER NOT NULL, 
@@ -177,7 +180,7 @@ ALTER TABLE stanowiska ADD CONSTRAINT stanowiska_pk PRIMARY KEY ( id );
 
 CREATE TABLE stany ( 
     id    NUMBER NOT NULL, 
-    nazwa VARCHAR2(15 CHAR) 
+    nazwa VARCHAR2(35 CHAR) 
 );
 
 ALTER TABLE stany ADD CONSTRAINT stany_pk PRIMARY KEY ( id );
