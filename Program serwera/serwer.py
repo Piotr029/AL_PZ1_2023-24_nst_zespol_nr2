@@ -87,7 +87,7 @@ def przeslij_dane(con: socket.socket, dane):
     con.send(msg_length)
     con.send(msg)
         
-def obsluga_klienta(con: socket.socket, adr: socket._RetAddress, db_conn):
+def obsluga_klienta(con: socket.socket, adr, db_conn):
     """
     Funkcja obslugujaca poszczegolnych klientow
 
