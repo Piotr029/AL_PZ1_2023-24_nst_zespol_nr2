@@ -1,4 +1,4 @@
-CREATE USER c##mr IDENTIFIED BY dbpass2;
+CREATE USER c##admin IDENTIFIED BY dbpass2;
 
 GRANT CREATE SESSION TO c##admin;
 
