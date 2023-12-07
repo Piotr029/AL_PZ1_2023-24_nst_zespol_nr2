@@ -95,12 +95,10 @@ CREATE TABLE maszyny (
     id             NUMBER NOT NULL, 
     dluga_nazwa    VARCHAR2(40 CHAR), 
     krotka_nazwa   VARCHAR2(8 CHAR), 
-    id_typu        NUMBER, 
+    id_typu        NUMBER NOT NULL, 
     producent      VARCHAR2(15 CHAR), 
     Nr_Seryjny  VARCHAR2(20 CHAR), 
-    id_stanu       NUMBER, 
-    stany_id       NUMBER NOT NULL, 
-    typy_maszyn_id NUMBER NOT NULL 
+    id_stanu       NUMBER NOT NULL
 );
 
 ALTER TABLE maszyny ADD CONSTRAINT maszyny_pk PRIMARY KEY ( id );
@@ -154,9 +152,9 @@ ALTER TABLE problemy ADD CONSTRAINT problemy_pk PRIMARY KEY ( id );
 
 CREATE TABLE przeglady ( 
     id             NUMBER NOT NULL, 
-    id_maszyny     NUMBER, 
+    id_maszyny     NUMBER,  
     id_uzytkownika NUMBER,    
-    data_wykonania           DATE, 
+    data_wykonania DATE, 
     raport         VARCHAR2(255), 
     uzytkownik_id  NUMBER NOT NULL, 
     maszyny_id     NUMBER NOT NULL 
@@ -214,10 +212,8 @@ ALTER TABLE usterka ADD CONSTRAINT usterka_pk PRIMARY KEY ( id );
 CREATE TABLE uzytkownik ( 
     id                   NUMBER NOT NULL, 
     nazwa                VARCHAR2(30 CHAR), 
-    id_stanowiska        NUMBER, 
-    id_kategoria_dostepu NUMBER, 
-    kategorie_dostepu_id NUMBER NOT NULL, 
-    stanowiska_id        NUMBER NOT NULL 
+    id_stanowiska        NUMBER NOT NULL,
+    id_kategoria_dostepu NUMBER NOT NULL
 );
 
 ALTER TABLE uzytkownik ADD CONSTRAINT uzytkownik_pk PRIMARY KEY ( id );
@@ -299,11 +295,11 @@ ALTER TABLE magazyn_miejsca
         REFERENCES magazyn ( id );
 
 ALTER TABLE maszyny 
-    ADD CONSTRAINT maszyny_stany_fk FOREIGN KEY ( stany_id ) 
+    ADD CONSTRAINT maszyny_stany_fk FOREIGN KEY ( id_stanu ) 
         REFERENCES stany ( id );
 
 ALTER TABLE maszyny 
-    ADD CONSTRAINT maszyny_typy_maszyn_fk FOREIGN KEY ( typy_maszyn_id ) 
+    ADD CONSTRAINT maszyny_typy_maszyn_fk FOREIGN KEY ( id_typu ) 
         REFERENCES typy_maszyn ( id );
 
 ALTER TABLE pozycja_czesci 
@@ -339,11 +335,11 @@ ALTER TABLE usterka
         REFERENCES typy_maszyn ( id );
 
 ALTER TABLE uzytkownik 
-    ADD CONSTRAINT uzytkownik_kat_dost_fk FOREIGN KEY ( kategorie_dostepu_id ) 
+    ADD CONSTRAINT uzytkownik_kat_dost_fk FOREIGN KEY ( id_kategoria_dostepu ) 
         REFERENCES kategorie_dostepu ( id );
 
 ALTER TABLE uzytkownik 
-    ADD CONSTRAINT uzytkownik_stanowiska_fk FOREIGN KEY ( stanowiska_id ) 
+    ADD CONSTRAINT uzytkownik_stanowiska_fk FOREIGN KEY ( id_stanowiska ) 
         REFERENCES stanowiska ( id );
 
 ALTER TABLE zadania 
