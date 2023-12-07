@@ -6,6 +6,7 @@ skypty w kolejnosci uzywania:
 2)skrypty_tabel: tworzy tabele i ich relacje
 3)skypt_obslugi: tworzy sekwecje i procedury do obslugi dzialan na tabelach
 4)skrypt_wprowadzajacy_dane: wprowadza  przykladowe dane na ktorych mozna testowac dzialanie
+5)Usuwanie tabel: skrypt do usuwania tabel, danych, procedur w ramach testowania
 
 Nastepujace tabele posiadaja:
 -Magazyn: Przykladowe Dane, sekwecje id, proc. Dodawania elementu, proc. Usuwania elementu, proc. Zmiany wartosci elementu
