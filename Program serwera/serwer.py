@@ -5,9 +5,9 @@ import cx_Oracle as orc
 import obsluga as obs   #modul obslugi zapytan bazy danych
 import pickle as pck    #bilioteka to pakowania(serializowania)/odpakowywania danych
 
-VERSION = 1.15 
+VERSION = 1.2 
 PORT = 5050                                                                     
-SERVER_IP = "192.168.23.244" #dom - 192.168.1.7  #Praca - 192.168.23.244
+SERVER_IP = "192.168.1.6" #dom - 192.168.1.7  #Praca - 192.168.23.244
 ADR = (SERVER_IP, PORT) 
 HEADER = 4
 FORMAT = 'utf-8'
@@ -110,7 +110,11 @@ def obsluga_klienta(con: socket.socket, adr, db_conn):
             #Pobieranie danych
             case 'GET':
                 if tabela == "TYPY_CZESCI": g_dane = obs.GET_TYPY_CZESCI(db_conn, atrybuty)
-                if tabela == "CZESCI": g_dane = obs.GET_CZESCI(db_conn, atrybuty)
+                if tabela == "CZESCI": g_dane = obs.GET_CZESCI(db_conn)
+                if tabela == 'POZYCJA_CZESCI': g_dane = obs.GET_STAN_MAGAZYNU(db_conn)
+                if tabela == 'MIARY': g_dane = obs.GET_MIARY(db_conn)
+                if tabela == 'UZYTKOWNIK': g_dane = obs.GET_UZYTKOWNIK(db_conn)
+                if tabela == 'HISTORIA_ZMIAN': g_Dane = obs.GET_HISTORIA_ZMIAN(db_conn)
             #Wstawianie danych    
             case 'POST':
                 p_dane = odbierz_dane(con)
@@ -121,6 +125,7 @@ def obsluga_klienta(con: socket.socket, adr, db_conn):
             #Zmiana danych    
             case 'UPDT':
                 if tabela == "CZESCI": g_dane = obs.UPDT_CZESCI(db_conn, atrybuty)
+                if tabela == "POZYCJA_CZESCI": g_dane = obs.UPDT_POZYCJA_CZESCI(db_conn, atrybuty)
         #Przeslij z powrotem dane tabeli po zmianach 
         przeslij_dane(con, g_dane)
     #Po wyjsciu z petli zakoncz polaczenie                                        
@@ -128,4 +133,5 @@ def obsluga_klienta(con: socket.socket, adr, db_conn):
     
 if __name__ == "__main__":
     print('[STARTING] Serwer startuje......')
+    
     start()
