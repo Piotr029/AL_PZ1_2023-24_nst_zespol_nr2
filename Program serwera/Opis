@@ -13,12 +13,15 @@ przykład_serwera.py:
 serwer.py : Glowny kod programu serwera
         v1.0 - Laczenie z bd/ laczenie z klientem/ obsluga zapytan o czesci i typy czesci
         v1.1 - dodano funkcjonalonosc usuwania/zmiany wybranych danych
+        v1.1.5 - dodano opisy i komentarze, uporzadkowano kod
         v1.2  -Dodanie obslugie pobierania danych Stanu_Magazynu czyli danych z tabel zwiazanych z magazynem, lokalizacja czesci, czesciami i ilosciami
                 -Dodanie obslugi pobierania typow Miar
                 -Dodanie obslugi pobierania Uzytkownikow
                 -Dodanie obslugi poprawy wartosci ilosci czeci w magazynie i jednoczesnego dodania wpisu do histori zmian o tym 
 
+
 obsluga.py: moduł obslugi zapytan bazy dancyh
         v1.0 - obluga zapytan o dodanie, wyswietlenie czesci
         v1.1 - dodano funkcjonalonosc usuwania/zmiany wybranych danych
+        v1.1.5 - dodano opisy i komentarze
         v1.2 - dodano obsluge funkcjonalnosci opisanych w v1.2 serwer.py
