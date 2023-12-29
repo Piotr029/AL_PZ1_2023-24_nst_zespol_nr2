@@ -12,7 +12,7 @@ Nastepujace tabele posiadaja:
 -Magazyn: Przykladowe Dane, sekwecje id, proc. Dodawania elementu, proc. Usuwania elementu, proc. Zmiany wartosci elementu
 -Magazyn_Miejsca: Przykladowe Dane, sekwecje id, proc. Dodawania elementu, proc. Usuwania elementu, proc. Zmiany wartosci elementu
 -Miejsce_Pozycja: Przykladowe Dane, sekwecje id, proc. Dodawania elementu, proc. Usuwania elementu, proc. Zmiany wartosci elementu
--Pozycja_Czesci: Przykladowe Dane, sekwecje id, proc. Dodawania elementu, proc. Poboru zbioru zwiazanych danych
+-Pozycja_Czesci: Przykladowe Dane, sekwecje id, proc. Dodawania elementu, proc. Poboru zbioru zwiazanych danych, proc. Zmiany nazwy czesci, proc. Poprawy ilosci z dodaniem wpisu do H.Zmian
 -Miary: Przykladowe Dane
 -Czesci: Przykladowe Dane, sekwecje id, proc. Dodawania elementu, proc. Usuwania elementu, proc. Zmiany wartosci elementu
 -Typy_czesci: Przykladowe Dane,
@@ -22,3 +22,4 @@ Nastepujace tabele posiadaja:
 -Stany: Przykladowe Dane,
 -Typy Maszyn: Przykladowe Dane,
 -Maszyny: Przykladowe Dane,
+-Historia Zmian: sekwecja id, proc. Dodajaca wpis Poprawy ilosci

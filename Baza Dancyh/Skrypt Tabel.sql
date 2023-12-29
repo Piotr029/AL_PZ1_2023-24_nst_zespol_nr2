@@ -54,16 +54,12 @@ ALTER TABLE etapy_zamowienia ADD CONSTRAINT etapy_zamowienia_pk PRIMARY KEY ( id
 
 CREATE TABLE historia_zmian ( 
     id                 NUMBER NOT NULL, 
-    id_czesci          NUMBER, 
-    id_pozycji         NUMBER, 
-    data_zmiany        DATE, 
-    id_rodzaju_zmiany  NUMBER, 
-    id_uzytkownika     NUMBER, 
-    dodatkowe_info     CLOB, 
-    miejsce_pozycja_id NUMBER NOT NULL, 
-    czesci_id          NUMBER NOT NULL, 
-    rodzaj_zmiany_id   NUMBER NOT NULL, 
-    uzytkownik_id      NUMBER NOT NULL 
+    id_czesci          NUMBER NOT NULL, 
+    id_pozycji         NUMBER NOT NULL, 
+    data_zmiany        DATE , 
+    id_rodzaju_zmiany  NUMBER NOT NULL, 
+    id_uzytkownika     NUMBER NOT NULL,
+	info			   VARCHAR2(30 CHAR)
 );
 
 ALTER TABLE historia_zmian ADD CONSTRAINT historia_zmian_pk PRIMARY KEY ( id );
@@ -164,7 +160,7 @@ ALTER TABLE przeglady ADD CONSTRAINT przeglady_pk PRIMARY KEY ( id );
 
 CREATE TABLE rodzaj_zmiany ( 
     id    NUMBER NOT NULL, 
-    nazwa VARCHAR2(10 CHAR) 
+    nazwa VARCHAR2(15 CHAR) 
 );
 
 ALTER TABLE rodzaj_zmiany ADD CONSTRAINT rodzaj_zmiany_pk PRIMARY KEY ( id );
@@ -275,19 +271,19 @@ ALTER TABLE dzienik_napraw
         REFERENCES uzytkownik ( id );
 
 ALTER TABLE historia_zmian 
-    ADD CONSTRAINT historia_zmian_czesci_fk FOREIGN KEY ( czesci_id ) 
+    ADD CONSTRAINT historia_zmian_czesci_fk FOREIGN KEY ( id_czesci ) 
         REFERENCES czesci ( id );
 
 ALTER TABLE historia_zmian 
-    ADD CONSTRAINT miejsce_pozycja_fk FOREIGN KEY ( miejsce_pozycja_id ) 
+    ADD CONSTRAINT miejsce_pozycja_fk FOREIGN KEY ( id_pozycji ) 
         REFERENCES miejsce_pozycja ( id );
 
 ALTER TABLE historia_zmian 
-    ADD CONSTRAINT rodzaj_zmiany_fk FOREIGN KEY ( rodzaj_zmiany_id ) 
+    ADD CONSTRAINT rodzaj_zmiany_fk FOREIGN KEY ( id_rodzaju_zmiany ) 
         REFERENCES rodzaj_zmiany ( id );
 
 ALTER TABLE historia_zmian 
-    ADD CONSTRAINT historia_zmian_uzytkownik_fk FOREIGN KEY ( uzytkownik_id ) 
+    ADD CONSTRAINT historia_zmian_uzytkownik_fk FOREIGN KEY ( id_uzytkownika ) 
         REFERENCES uzytkownik ( id );
 
 ALTER TABLE magazyn_miejsca
