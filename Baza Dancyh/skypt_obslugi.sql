@@ -230,3 +230,28 @@ BEGIN
 	COMMIT;
 END dodaj_czesc_pozycje;
 /
+--Procedura zmiany ilosci w tabeli pozycja_czesci
+CREATE OR REPLACE PROCEDURE zmien_ilosc_poz_czesci(
+    p_id IN NUMBER,
+    p_ilosc IN FLOAT,
+    p_miary_id IN NUMBER
+)
+AS
+BEGIN
+    -- Aktualizujemy wartość w kolumnie ILOSC
+    UPDATE POZYCJA_CZESCI SET ILOSC = p_ilosc WHERE ID = p_id;
+    -- Aktualizujemy wartość w kolumnie MIARY_ID
+    UPDATE POZYCJA_CZESCI SET MIARY_ID = p_miary_id WHERE ID = p_id;
+    COMMIT; -- Potwierdzamy zmiany
+END;
+/
+-- ########################################################################
+-- Obsluga tabeli Historia_Zmian
+-- ########################################################################
+--Sekwecja id Histori_Zmian
+CREATE SEQUENCE SEQ.HISTORIA_ZMIAN
+    START WITH 1
+    INCREMENT BY 1
+    NOCACHE
+    NOCYCLE;
+
