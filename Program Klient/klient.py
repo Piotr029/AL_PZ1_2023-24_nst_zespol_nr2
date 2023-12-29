@@ -2,10 +2,10 @@ import socket       #bilioteka do twrzenia polaczen
 import funkcje as f #modul z funkcjami, pewnie profesjonalniej bedzie trzeba to nazwac
 from test_UI import SimpleUI as Ui  #ui testowe
 
-VERSION = 1.15
+VERSION = 1.2
 
-PORT = 5050         #na jakim portcie bedzie relizowane poloczenie
-SERVER_IP = "192.168.23.244"   #IP serwera, w tym przykladzie dzialamy w sieci lokalnej wiec ip lokalne
+PORT = 5050         #na jakim portcie bedzie relizowane poloczenie #5050
+SERVER_IP = "192.168.1.6"   #IP serwera, w tym przykladzie dzialamy w sieci lokalnej wiec ip lokalne #192.168.23.244 
 ADR = (SERVER_IP, PORT)     #adress naszego serwera
 
 HEADER = 4       #dlugosc 4 bajtow mowiaca jaka bedzie dl glownej wiadomosci
@@ -32,9 +32,9 @@ def send(txt: str):
     print(klient.recv(3).decode(FORMAT))                          #otrzymuje potwierdzenie - akutat potwierdzenie jest dl 3
     
 if TEST:
-    czesci = f.pobierz_Typy_Czesci(klient)
-    for czesc in czesci:
-        print(czesc)
+    print('Prubuje wyslac')
+    send("Witaj z komuptera w Pracy")
+    print('wyslalem')
     input()
     send(ROZLACZ)
     
@@ -48,13 +48,15 @@ def start_ui():
     #tworzenie obiektu ui()
     ui = Ui()
     #pobranie poczatkowych danych do wyswietlenia
-    ui.typy = f.pobierz_Typy_Czesci(klient)
+    ui.stan = f.pobierz_stan_magazynu(klient)
+    ui.miary = f.pobierz_miary(klient)
+    ui.uzytkownicy = f.pobierz_uztkownikow(klient)
+    ui.hist_zmin_mag = f.pobierz_hist_zmin_mag(klient)
+    #Przypisanie funkcji do elementow Ui
+    ui.b3_menu_magazyn.add_command(label="Popraw Nazwe", command=lambda: f.popraw_nz_w_magazynie(klient, ui))
+    ui.b3_menu_magazyn.add_command(label="Popraw Ilość", command=lambda: f.popraw_ilosc_w_magazynie(klient, ui))
     ui.czesci = f.pobierz_czesci(klient)
     #przypisanie funkcji do widgetow je obslugujacyh przyciski itd
-    ui.context_menu.add_command(label="Zmien", command=lambda: f.zmien_czesc(klient, ui))
-    ui.context_menu.add_command(label="Usun", command=lambda: f.usun_czesc(klient, ui))
-    ui.context_menu.add_command(label="Opcja 3")
-    ui.button_dodaj.config(command=lambda: f.dodaj_czesc(klient, ui))
     #zwaracamy zbydowane ui
     return ui
     
