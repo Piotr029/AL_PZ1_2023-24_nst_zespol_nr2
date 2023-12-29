@@ -8,8 +8,14 @@ klient.py: Glowny kod klienta
       v1.0 - laczenie z serwerem wysylanie/odbeiranie danych, obsluga wyswietlania czesci i dodawania nowej czesci do bazy danych
       v1.1 - rozszerzenie funkcjonalnosci o usuwanie/zmiane wybranych danych
       v1.15 - dodanie opisow i komentarzy, uporządkowanie kodu
+      v1.2 - Funkcjonalosci zwiazne z Stanem magazynu, UI, tabela z danymi, wyszkiwkanie po nazwie, zmiana nazwy, poprawa ilosci
 
 funkcje.py: Modul z funkcja wykorzystywanymi przez app klienta
       v1.0 - funkcje wysylania/obierania danych, obsluga zapytan o czesci i typy czesci
       v1.1 - rozszerzenie funkcjonalnosci o usuwanie/zmiane wybranych danych
       v1.15 - dodanie opisow i komentarzy, uporządkowanie kodu
+      v1.2 - Funkcjonalosci zwiazne z Stanem Magazynu, oblsuga wysylania/odbierania zapytan zwiazaneych z: 
+                  -tabeli Pozycja_Czesci: pobierz dane, wyslij zmiane nazwy, wyslij poprawe ilosci
+                  -tabeli Uzytkownicy: Pobranie danych
+                  -tabeli Miary: Pobranie danych
+                  -tabeli Historia_Zmian: Pobranie danych
