@@ -3,7 +3,7 @@ from tkinter import ttk, Menu, filedialog
 import sv_ttk
 import csv
 from tkinter import ttk
-from tkcalendar import Calendar
+import tkcalendar as tkc
 from ttkthemes import ThemedTk
 import sqlite3
 # def initialize_database_and_insert_data():
@@ -92,7 +92,7 @@ def display_data():
     for row in cursor.fetchall():
         print(row)
 
-    conn.close()
+    conn.close() 
 
 # Inicjalizacja i wstawianie danych
 #initialize_database_and_insert_data()
@@ -169,7 +169,7 @@ def initialize_database():
 def initialize_styles():
     style = ttk.Style()
     # Definiowanie stylu dla przycisków
-    style.configure("Sidebar.TButton", font=('Calibri', 12), padding=5)
+    style.configure("Sidebar.TButton", font=('Calibri', 14,), padding=5)
     style.map("Sidebar.TButton", background=[('active', 'lightblue')], foreground=[('active', 'black')])
 def change_theme(root, theme):
     root.set_theme(theme)
@@ -795,12 +795,12 @@ class RepairScheduleModule(ttk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
         self.grid_rowconfigure(0, weight=1)
-        self.grid_columnconfigure(0, weight=1)
-
+        self.grid_columnconfigure(0, weight=3)
+        self.create_calendar()
         self.create_schedule_table()
         self.create_control_panel()
         self.load_schedule_data()
-
+        
     def create_schedule_table(self):
         columns = ('ID', 'ID Maszyny', 'Serwisant', 'Data Przeglądu', 'Data Naprawy', 'Stan Maszyny')
         self.tree = ttk.Treeview(self, columns=columns, show='headings', style="Custom.Treeview.Heading")
@@ -811,6 +811,17 @@ class RepairScheduleModule(ttk.Frame):
         self.tree_scroll = ttk.Scrollbar(self, orient="vertical", command=self.tree.yview)
         self.tree_scroll.grid(row=0, column=1, sticky='ns')
         self.tree.configure(yscrollcommand=self.tree_scroll.set)
+        
+        # Tworzenie kalendarza 
+        self.create_calendar()
+    def create_calendar(self):
+        # Utworzenie ramki na kalendarz
+        calendar_frame = ttk.Frame(self)
+        calendar_frame.grid(row=0, column=1, sticky='nsew', padx=10, pady=10)
+
+        # Dodanie kalendarza do ramki
+        self.calendar = tkc.Calendar(calendar_frame, selectmode='day')
+        self.calendar.pack(expand=True, fill='both')
 
     def create_control_panel(self):
         control_frame = ttk.Frame(self)
@@ -933,6 +944,8 @@ class RepairScheduleModule(ttk.Frame):
             self.entry_machine_status.pack(side='left', padx=5)
 
             ttk.Button(self, text="Dodaj", command=self.add_repair).pack(pady=10)
+
+    
 
         def add_repair(self):
             repair_data = (
@@ -1171,11 +1184,11 @@ class Application(ttk.Frame):
         sidebar = ttk.Frame(self)
         sidebar.pack(side="left", fill="y", expand=False)
 
-        ttk.Button(sidebar, text="Magazyn", style="Accent.TButton",command=lambda: self.show_module("Magazyn")).pack(fill="x")
-        ttk.Button(sidebar, text="Katalog Części", style="Accent.TButton" ,command=lambda: self.show_module("Katalog Części")).pack(fill="x")
-        ttk.Button(sidebar, text="Raporty", style="Accent.TButton",command=lambda: self.show_module("Raporty")).pack(fill="x")
-        ttk.Button(sidebar, text="Zadania", style="Accent.TButton",command=lambda: self.show_module("Zadania")).pack(fill="x")
-        ttk.Button(sidebar, text="Terminarz Napraw", style="Accent.TButton" ,command=lambda: self.show_module("Terminarz Napraw")).pack(fill="x")
+        ttk.Button(sidebar, text="Magazyn", style="Sidebar.TButton",command=lambda: self.show_module("Magazyn")).pack(fill="x")
+        ttk.Button(sidebar, text="Katalog Części", style="Sidebar.TButton" ,command=lambda: self.show_module("Katalog Części")).pack(fill="x")
+        ttk.Button(sidebar, text="Raporty", style="Sidebar.TButton",command=lambda: self.show_module("Raporty")).pack(fill="x")
+        ttk.Button(sidebar, text="Zadania", style="Sidebar.TButton",command=lambda: self.show_module("Zadania")).pack(fill="x")
+        ttk.Button(sidebar, text="Terminarz Napraw", style="Sidebar.TButton" ,command=lambda: self.show_module("Terminarz Napraw")).pack(fill="x")
 
     def init_modules(self):
         self.modules["Magazyn"] = WarehouseModule(self)
