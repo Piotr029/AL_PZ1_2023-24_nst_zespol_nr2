@@ -1,150 +1,1208 @@
 import tkinter as tk
+from tkinter import ttk, Menu, filedialog 
+import sv_ttk
+import csv
 from tkinter import ttk
-from tkcalendar import Calendar  # Importowanie tkcalendar
+from tkcalendar import Calendar
+from ttkthemes import ThemedTk
+import sqlite3
+# def initialize_database_and_insert_data():
+#     conn = sqlite3.connect('warehouse_management.db')
+#     cursor = conn.cursor()
 
+#     # Przykładowe dane dla tabeli Katalog_Czesci
+#     katalog_czesci_data = [
+#         (None, 'Śruba M8', 'Śruba', 0.50, '8mm', 'Stal', 'Hex'),
+#         (None, 'Nakrętka M8', 'Nakrętka', 0.30, '8mm', 'Stal', 'Hex'),
+#         (None, 'Podkładka M8', 'Podkładka', 0.10, '8mm', 'Stal', 'Okrągła'),
+#         (None, 'Śruba M6', 'Śruba', 0.40, '6mm', 'Stal', 'Hex'),
+#         (None, 'Nakrętka M6', 'Nakrętka', 0.25, '6mm', 'Stal', 'Hex')
+#     ]
+#     magazyn_data = [
+#         (None, 'Śruba M8', 80, '3', 'Regał 3',None),
+#         (None, 'Nakrętka M8', 120, '3', 'Regał 4',None),
+#         (None, 'Śruba M6', 50, '4', 'Regał 2',None),
+#         # Dodaj więcej danych według potrzeb
+#     ]
+    
+    
 
-# Create the main window
-root = tk.Tk()
-root.title("Aplikacja do Zarządzania Utrzymaniem Ruchu")
+#     # Przykładowe dane dla tabeli Terminarz_Napraw
+#     terminarz_napraw_data = [
+#         (None, '01', 'Jan K', '20/02/2024', '-', 'Sprawna'),
+#         (None, '02', 'Adam B', '15/03/2024', '22/03/2024', 'Naprawiona'),
+#         # Dodaj więcej danych według potrzeb
+#     ]
 
-# Set window size
-root.geometry("1200x800")
+#     # Wprowadzanie danych do tabeli Magazyn
+#     cursor.executemany('INSERT INTO Magazyn VALUES (?, ?, ?, ?, ?, ?)', magazyn_data)
 
-# Create a frame for the sidebar
-sidebar = tk.Frame(root, width=200, bg='#dddddd')
-sidebar.pack(fill='y', side='left', anchor='nw')
+#     # Wprowadzanie danych do tabeli Terminarz_Napraw
+#     cursor.executemany('INSERT INTO Terminarz_Napraw VALUES (?, ?, ?, ?, ?, ?)', terminarz_napraw_data)
 
-# Function to update the main area based on button clicked
-def update_main_area(option):
-    # Clear the previous options
-    for widget in options_frame.winfo_children():
-        widget.destroy()
-    button_frame = tk.Frame(options_frame)
-    button_frame.pack(fill='x')
- # Create a table for the "Magazyn" option
-    if option == "Magazyn":
-        columns = ("nazwa_czesci", "id_czesci", "pozycja_czesci", "ilosc", "parametr1", "parametr2")
-        table = ttk.Treeview(options_frame, columns=columns, show='headings')
+#     # Przykładowe dane dla tabeli Zadania
+#     zadania_data = [
+#         (None, 'Sprawdzenie stanu maszyn', 'Kontrola maszyn w warsztacie', '2024-02-20', 2),
+#         (None, 'Zamówienie nowych części', 'Zamówienie śrub i nakrętek', '2024-02-22', 3),
+#         (None, 'Czyszczenie narzędzi', 'Generalne czyszczenie narzędzi', '2024-02-25', 1),
+#         (None, 'Naprawa tokarki', 'Wymiana paska w tokarce', '2024-03-01', 4),
+#         (None, 'Kontrola stanu magazynu', 'Inwentaryzacja magazynu', '2024-03-05', 5)
+#     ]
+
+#     maszyny_data = [
+#         (1, 'Tokarka', 'Sprawna'),
+#         (2, 'Frezarka', 'Niesprawna'),
+#         # Dodaj więcej danych według potrzeb
+#     ]
+
+#     # Wprowadzanie danych do tabeli Maszyny
+#     cursor.executemany('INSERT INTO Maszyny (ID, Nazwa, Stan) VALUES (?, ?, ?)', maszyny_data)
+
+#     # Wprowadzanie danych do tabeli Katalog_Czesci
+#     cursor.executemany('INSERT INTO Katalog_Czesci VALUES (?, ?, ?, ?, ?, ?, ?)', katalog_czesci_data)
+
+#     # Wprowadzanie danych do tabeli Zadania
+#     cursor.executemany('INSERT INTO Zadania VALUES (?, ?, ?, ?, ?)', zadania_data)
+
+#     # Zatwierdzenie zmian i zamknięcie połączenia
+#     conn.commit()
+#     conn.close()
+
+def display_data():
+    conn = sqlite3.connect('warehouse_management.db')
+    cursor = conn.cursor()
+
+    print("Katalog Części:")
+    cursor.execute('SELECT * FROM Katalog_Czesci LIMIT 5')
+    for row in cursor.fetchall():
+        print(row)
+
+    print("\nZadania:")
+    cursor.execute('SELECT * FROM Zadania LIMIT 5')
+    for row in cursor.fetchall():
+        print(row)
+
+    print("\nMagazyn:")
+    cursor.execute('SELECT * FROM Magazyn LIMIT 5')
+    for row in cursor.fetchall():
+        print(row)
+
+    print("\nTerminarz Napraw:")
+    cursor.execute('SELECT * FROM Terminarz_Napraw LIMIT 5')
+    for row in cursor.fetchall():
+        print(row)
+
+    conn.close()
+
+# Inicjalizacja i wstawianie danych
+#initialize_database_and_insert_data()
+
+# Wyświetlanie przykładowych danych
+display_data()
+def initialize_database():
+    # Połączenie z bazą danych (będzie utworzona, jeśli nie istnieje)
+    conn = sqlite3.connect('warehouse_management.db')
+
+    # Utworzenie obiektu cursor do wykonywania zapytań SQL
+    cursor = conn.cursor()
+
+    # Utworzenie tabel
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Magazyn (
+        ID INTEGER PRIMARY KEY,
+        Czesc TEXT NOT NULL,
+        Ilosc INTEGER NOT NULL,
+        Pokoj TEXT NOT NULL,
+        Lokalizacja TEXT NOT NULL,
+        ID_Czesci INTEGER,
+        FOREIGN KEY(ID_Czesci) REFERENCES Katalog_Czesci(ID)
+    )''')
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Katalog_Czesci (
+        ID INTEGER PRIMARY KEY,
+        Nazwa TEXT NOT NULL,
+        Typ TEXT NOT NULL,
+        Cena REAL NOT NULL,
+        Parametr1 TEXT,
+        Parametr2 TEXT,
+        Parametr3 TEXT
+    )''')
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Zadania (
+        ID INTEGER PRIMARY KEY,
+        Nazwa_Zadania TEXT NOT NULL,
+        Opis TEXT NOT NULL,
+        Termin_Wykonania TEXT NOT NULL,
+        Priorytet INTEGER NOT NULL
+    )''')
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Terminarz_Napraw (
+        ID INTEGER PRIMARY KEY,
+        ID_Maszyny INTEGER NOT NULL,
+        Serwisant TEXT NOT NULL,
+        Data_Przegladu TEXT NOT NULL,
+        Data_Naprawy TEXT NOT NULL,
+        Stan_Maszyny TEXT NOT NULL
+    )''')
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Raporty (
+        ID INTEGER PRIMARY KEY,
+        Data_Utworzenia TEXT NOT NULL,
+        Opis TEXT,
+        Sciezka_Pliku TEXT
+    )''')
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Maszyny (
+        ID INTEGER PRIMARY KEY,
+        Nazwa TEXT NOT NULL,
+        Stan TEXT NOT NULL
+    )''')
+    # Zatwierdzenie zmian i zamknięcie połączenia
+    conn.commit()
+    conn.close()
+
+def initialize_styles():
+    style = ttk.Style()
+    # Definiowanie stylu dla przycisków
+    style.configure("Sidebar.TButton", font=('Calibri', 12), padding=5)
+    style.map("Sidebar.TButton", background=[('active', 'lightblue')], foreground=[('active', 'black')])
+def change_theme(root, theme):
+    root.set_theme(theme)
+####################################################################################
+class WarehouseModule(ttk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+        self.create_warehouse_table()
+        self.create_control_panel()
+        self.load_warehouse_data()
+        
+
+    def create_warehouse_table(self):
+        columns = ('ID', 'Czesc', 'Ilosc', 'Pokoj', 'Lokalizacja')
+        self.tree = ttk.Treeview(self, columns=columns, show='headings', style="Custom.Treeview.Heading")
         for col in columns:
-            table.heading(col, text=col.replace("_", " ").title())
-            table.column(col, width=100, anchor='center')
-        table.pack(expand=True, fill='both')
-        # Przyciski i pole wprowadzania
-        entry_frame = tk.Frame(options_frame)
-        entry_frame.pack(fill='x', pady=10)
+            self.tree.heading(col, text=col)
+        self.tree.grid(row=0, column=0, sticky='nsew')
+        self.tree_scroll = ttk.Scrollbar(self, orient="vertical", command=self.tree.yview)
+        self.tree_scroll.grid(row=0, column=1, sticky='ns')
+        self.tree.configure(yscrollcommand=self.tree_scroll.set)
 
-        entry_label = tk.Label(entry_frame, text="Wpisz dane:")
-        entry_label.pack(side='left', padx=5)
+    def create_control_panel(self):
+        control_frame = ttk.Frame(self)
+        control_frame.grid(row=1, column=0, columnspan=2, sticky='ew', padx=10, pady=10)
+        ttk.Button(control_frame, text="Dodaj", style="Sidebar.TButton", command=self.open_add_dialog).pack(side='left')
+        ttk.Button(control_frame, text="Usuń", style="Sidebar.TButton", command=self.remove_item).pack(side='left', padx=10)
+        ttk.Button(control_frame, text="Edytuj", style="Sidebar.TButton", command=self.open_edit_dialog).pack(side='left')
+        search_label = ttk.Label(control_frame, text="Wyszukaj: ")
+        search_label.pack(side='left', padx=10, pady=10)
+        self.search_var = tk.StringVar()
+        search_entry = ttk.Entry(control_frame, textvariable=self.search_var)
+        search_entry.pack(side='left', fill='x', expand=True)
+        ttk.Button(control_frame, text="Szukaj", style="Accent.TButton", 
+               command=lambda: self.search_item(self.search_var.get())).pack(side='left')
+    def open_add_dialog(self):
+        dialog = self.AddItemDialog(self)
+        self.wait_window(dialog)
 
-        entry = tk.Entry(entry_frame)
-        entry.pack(side='left', expand=True, fill='x', padx=5)
+    def open_edit_dialog(self):
+        selected_item = self.tree.focus()
+        if not selected_item:
+            return
+        item_data = self.tree.item(selected_item, 'values')
+        dialog = self.EditItemDialog(self, item_data)
+        self.wait_window(dialog)
 
-        add_button = tk.Button(entry_frame, text="Dodaj część", command=lambda: add_part(entry.get(), table))
-        add_button.pack(side='left', padx=5)
+    def add_item(self, item_data):
+        conn = sqlite3.connect('warehouse_management.db')
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO Magazyn (Czesc, Ilosc, Pokoj, Lokalizacja) VALUES (?, ?, ?, ?)', item_data)
+        conn.commit()
+        conn.close()
+        self.load_warehouse_data()
 
-        delete_button = tk.Button(entry_frame, text="Usuń część", command=lambda: delete_part(table))
-        delete_button.pack(side='left', padx=5)
+    def remove_item(self):
+        selected_item = self.tree.focus()
+        if not selected_item:
+            return
+        item_id = self.tree.item(selected_item, 'values')[0]
+        conn = sqlite3.connect('warehouse_management.db')
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM Magazyn WHERE ID = ?', (item_id,))
+        conn.commit()
+        conn.close()
+        self.load_warehouse_data()
 
-        edit_button = tk.Button(entry_frame, text="Edytuj część", command=lambda: edit_part(entry.get(), table))
-        edit_button.pack(side='left', padx=5)
+    def edit_item(self, item_id, updated_data):
+        conn = sqlite3.connect('warehouse_management.db')
+        cursor = conn.cursor()
+        cursor.execute('UPDATE Magazyn SET Czesc = ?, Ilosc = ?, Pokoj = ?, Lokalizacja = ? WHERE ID = ?', (*updated_data, item_id))
+        conn.commit()
+        conn.close()
+        self.load_warehouse_data()
 
-        table.pack(expand=True, fill='both')
+    def load_warehouse_data(self):
+        self.tree.delete(*self.tree.get_children())
+        conn = sqlite3.connect('warehouse_management.db')
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM Magazyn')
+        rows = cursor.fetchall()
+        for row in rows:
+            self.tree.insert('', 'end', values=row)
+        conn.close()
 
-        # Funkcje dla przycisków
-        def add_part(data, table):
-            # Logika dodawania części
-            pass
+    def search_item(self, search_query):
+        self.tree.delete(*self.tree.get_children())
+        conn = sqlite3.connect('warehouse_management.db')
+        cursor = conn.cursor()
+        query = """SELECT * FROM Magazyn WHERE 
+                Czesc LIKE ? OR 
+                Ilosc LIKE ? OR 
+                Pokoj LIKE ? OR 
+                Lokalizacja LIKE ?"""
+        cursor.execute(query, ('%' + search_query + '%',) * 4)
+        rows = cursor.fetchall()
+        for row in rows:
+            self.tree.insert('', 'end', values=row)
+        conn.close()
 
-        def delete_part(table):
-            # Logika usuwania części
-            pass
+    class AddItemDialog(tk.Toplevel):
+        def __init__(self, parent):
+            super().__init__(parent)
+            self.parent = parent
+            self.create_widgets()
 
-        def edit_part(data, table):
-            # Logika edytowania części
-            pass        
+        def create_widgets(self):
+            frame = ttk.Frame(self)
+            frame.pack(padx=10, pady=10)
 
-         # Dodawanie przykładowych danych do tabeli
-        data = [
-            ("Część A", "001", "Regał 1", "10", "Parametr A1", "Parametr A2"),
-            ("Część B", "002", "Regał 2", "15", "Parametr B1", "Parametr B2"),
-            # ... więcej danych
-        ]
-        for row in data:
-            table.insert('', 'end', values=row)
-        table.pack(expand=True, fill='both')
+            ttk.Label(frame, text="Część:").pack(side='left')
+            self.entry_czesc = ttk.Entry(frame)
+            self.entry_czesc.pack(side='left')
 
-    elif option == "Maszyny":
-        ttk.Button(button_frame, text="Dodaj maszynę", command=add_machine).pack(side='left', padx=10, pady=10)
-        ttk.Button(button_frame, text="Usuń maszynę", command=remove_machine).pack(side='left', padx=10, pady=10)
+            ttk.Label(frame, text="Ilość:").pack(side='left')
+            self.entry_ilosc = ttk.Entry(frame)
+            self.entry_ilosc.pack(side='left')
 
-    elif option == "Dziennik Napraw":
-        ttk.Button(button_frame, text="Dodaj przegląd", command=add_review).pack(side='left', padx=10, pady=10)
-        ttk.Button(button_frame, text="Edytuj przegląd", command=edit_review).pack(side='left', padx=10, pady=10)
+            ttk.Label(frame, text="Pokój:").pack(side='left')
+            self.entry_pokoj = ttk.Entry(frame)
+            self.entry_pokoj.pack(side='left')
 
-    elif option == "Użytkownik":
-        ttk.Button(button_frame, text="Dodaj użytkownika", command=add_user).pack(side='left', padx=10, pady=10)
-        ttk.Button(button_frame, text="Usuń użytkownika", command=remove_user).pack(side='left', padx=10, pady=10)
+            ttk.Label(frame, text="Lokalizacja:").pack(side='left')
+            self.entry_lokalizacja = ttk.Entry(frame)
+            self.entry_lokalizacja.pack(side='left')
 
-    elif option == "Zadania":
-        ttk.Button(button_frame, text="Dodaj zadanie", command=add_task).pack(side='left', padx=10, pady=10)
-        ttk.Button(button_frame, text="Usuń zadanie", command=remove_task).pack(side='left', padx=10, pady=10)
+            ttk.Button(self, text="Dodaj", command=self.add_item).pack(pady=10)
+
+        def add_item(self):
+            item_data = (
+                self.entry_czesc.get(),
+                int(self.entry_ilosc.get()),
+                self.entry_pokoj.get(),
+                self.entry_lokalizacja.get()
+            )
+            self.parent.add_item(item_data)
+            self.destroy()
+
+    class EditItemDialog(tk.Toplevel):
+        def __init__(self, parent, item_data):
+            super().__init__(parent)
+            self.parent = parent
+            self.item_id = item_data[0]
+            self.item_data = item_data
+            self.create_widgets()
+
+        def create_widgets(self):
+            #self.geometry("400x200")  # Ustawienie rozmiaru okna
+            self.title("Edytuj przedmiot")
+
+            frame = ttk.Frame(self)
+            frame.pack(padx=10, pady=10)
+
+            # Część
+            ttk.Label(frame, text="Część:").pack(side='left')
+            self.entry_czesc = ttk.Entry(frame)
+            self.entry_czesc.insert(0, self.item_data[1])  # Wstępne wypełnienie danymi
+            self.entry_czesc.pack(side='left')
+
+            # Ilość
+            ttk.Label(frame, text="Ilość:").pack(side='left')
+            self.entry_ilosc = ttk.Entry(frame)
+            self.entry_ilosc.insert(0, self.item_data[2])  # Wstępne wypełnienie danymi
+            self.entry_ilosc.pack(side='left')
+
+            # Pokój
+            ttk.Label(frame, text="Pokój:").pack(side='left')
+            self.entry_pokoj = ttk.Entry(frame)
+            self.entry_pokoj.insert(0, self.item_data[3])  # Wstępne wypełnienie danymi
+            self.entry_pokoj.pack(side='left')
+
+            # Lokalizacja
+            ttk.Label(frame, text="Lokalizacja:").pack(side='left')
+            self.entry_lokalizacja = ttk.Entry(frame)
+            self.entry_lokalizacja.insert(0, self.item_data[4])  # Wstępne wypełnienie danymi
+            self.entry_lokalizacja.pack(side='left')
+
+            # Przycisk do edycji
+            ttk.Button(self, text="Edytuj", command=self.edit_item).pack(pady=10)
+
+        def edit_item(self):
+            updated_data = (
+                self.entry_czesc.get(),
+                int(self.entry_ilosc.get()),
+                self.entry_pokoj.get(),
+                self.entry_lokalizacja.get()
+            )
+            self.parent.edit_item(self.item_id, updated_data)
+            self.destroy()
+
+####    #############################################################################################
+class PartsCatalogModule(ttk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+
+        self.create_parts_table()
+        self.create_control_panel()
+        self.load_parts_data()
+
+    def create_parts_table(self):
+        columns = ('ID', 'Nazwa', 'Typ', 'Cena', 'Parametr1', 'Parametr2', 'Parametr3')
+        self.tree = ttk.Treeview(self, columns=columns, show='headings', style="Custom.Treeview.Heading")
+        for col in columns:
+            self.tree.heading(col, text=col)
+            self.tree.column(col, width=100)
+        self.tree.grid(row=0, column=0, sticky='nsew')
+
+        # Dodanie paska przewijania
+        self.tree_scroll = ttk.Scrollbar(self, orient="vertical", command=self.tree.yview)
+        self.tree_scroll.grid(row=0, column=1, sticky='ns')
+        self.tree.configure(yscrollcommand=self.tree_scroll.set)
+
+    def create_control_panel(self):
+        control_frame = ttk.Frame(self)
+        control_frame.grid(row=1, column=0, columnspan=2, sticky='ew', padx=10, pady=10)
+        ttk.Button(control_frame, text="Dodaj", style="Accent.TButton", command=self.open_add_dialog).pack(side='left')
+        ttk.Button(control_frame, text="Edytuj", style="Accent.TButton", command=self.open_edit_dialog).pack(side='left', padx=10)
+        ttk.Button(control_frame, text="Usuń", style="Accent.TButton", command=self.delete_part).pack(side='left')
+
+        search_label = ttk.Label(control_frame, text="Wyszukaj: ")
+        search_label.pack(side='left', padx=10, pady=10)
+        self.search_var = tk.StringVar()
+        search_entry = ttk.Entry(control_frame, textvariable=self.search_var)
+        search_entry.pack(side='left', fill='x', expand=True)
+        ttk.Button(control_frame, text="Szukaj", style="Accent.TButton", 
+                   command=lambda: self.search_part(self.search_var.get())).pack(side='left')
+
+    def open_add_dialog(self):
+        dialog = self.AddItemDialog(self)
+        self.wait_window(dialog)
+
+    def open_edit_dialog(self):
+        selected_item = self.tree.focus()
+        if not selected_item:
+            return
+        item_data = self.tree.item(selected_item, 'values')
+        dialog = self.EditItemDialog(self, item_data)
+        self.wait_window(dialog)
+
+    def add_part(self, part_data):
+        conn = sqlite3.connect('warehouse_management.db')
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO Katalog_Czesci (Nazwa, Typ, Cena, Parametr1, Parametr2, Parametr3) VALUES (?, ?, ?, ?, ?, ?)', part_data)
+        conn.commit()
+        conn.close()
+        self.load_parts_data()
+
+    def edit_part(self, part_id, updated_data):
+        conn = sqlite3.connect('warehouse_management.db')
+        cursor = conn.cursor()
+        cursor.execute('UPDATE Katalog_Czesci SET Nazwa = ?, Typ = ?, Cena = ?, Parametr1 = ?, Parametr2 = ?, Parametr3 = ? WHERE ID = ?', updated_data + (part_id,))
+        conn.commit()
+        conn.close()
+        self.load_parts_data()
+
+    def delete_part(self):
+        selected_item = self.tree.focus()  # Pobierz zaznaczony element
+        if not selected_item:
+            return  # Brak zaznaczonego elementu
+
+        item_data = self.tree.item(selected_item, 'values')
+        part_id = item_data[0]  # ID jest pierwszym elementem w danych
+
+        conn = sqlite3.connect('warehouse_management.db')
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM Katalog_Czesci WHERE ID = ?', (part_id,))
+        conn.commit()
+        conn.close()
+        self.load_parts_data()
+    def load_parts_data(self):
+        self.tree.delete(*self.tree.get_children())
+        conn = sqlite3.connect('warehouse_management.db')
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM Katalog_Czesci')
+        rows = cursor.fetchall()
+        for row in rows:
+            self.tree.insert('', 'end', values=row)
+        conn.close()
+    def search_part(self, search_query):
+        self.tree.delete(*self.tree.get_children())
+        conn = sqlite3.connect('warehouse_management.db')
+        cursor = conn.cursor()
+        query = """SELECT * FROM Katalog_Czesci WHERE 
+                   Nazwa LIKE ? OR 
+                   Typ LIKE ? OR 
+                   Cena LIKE ? OR 
+                   Parametr1 LIKE ? OR 
+                   Parametr2 LIKE ? OR 
+                   Parametr3 LIKE ?"""
+        cursor.execute(query, ('%' + search_query + '%',) * 6)
+        rows = cursor.fetchall()
+        for row in rows:
+            self.tree.insert('', 'end', values=row)
+        conn.close()
+    
+    class AddItemDialog(tk.Toplevel):
+        def __init__(self, parent):
+            super().__init__(parent)
+            self.parent = parent
+            self.create_widgets()
+
+        def create_widgets(self):
+            self.geometry("600x200")
+            self.title("Dodaj część")
+
+            frame = ttk.Frame(self)
+            frame.pack(padx=10, pady=10)
+
+            # Pola do wprowadzania danych
+            ttk.Label(frame, text="Nazwa:").grid(row=0, column=0, padx=5, pady=5)
+            self.entry_nazwa = ttk.Entry(frame)
+            self.entry_nazwa.grid(row=0, column=1, padx=5, pady=5)
+
+            ttk.Label(frame, text="Typ:").grid(row=0, column=2, padx=5, pady=5)
+            self.entry_typ = ttk.Entry(frame)
+            self.entry_typ.grid(row=0, column=3, padx=5, pady=5)
+
+            ttk.Label(frame, text="Cena:").grid(row=1, column=0, padx=5, pady=5)
+            self.entry_cena = ttk.Entry(frame)
+            self.entry_cena.grid(row=1, column=1, padx=5, pady=5)
+
+            ttk.Label(frame, text="Parametr1:").grid(row=1, column=2, padx=5, pady=5)
+            self.entry_parametr1 = ttk.Entry(frame)
+            self.entry_parametr1.grid(row=1, column=3, padx=5, pady=5)
+
+            ttk.Label(frame, text="Parametr2:").grid(row=2, column=0, padx=5, pady=5)
+            self.entry_parametr2 = ttk.Entry(frame)
+            self.entry_parametr2.grid(row=2, column=1, padx=5, pady=5)
+
+            ttk.Label(frame, text="Parametr3:").grid(row=2, column=2, padx=5, pady=5)
+            self.entry_parametr3 = ttk.Entry(frame)
+            self.entry_parametr3.grid(row=2, column=3, padx=5, pady=5)
+
+            ttk.Button(self, text="Dodaj", command=self.add_part).pack(pady=10)
+
+ 
+        def add_part(self):
+            part_data = (
+                self.entry_nazwa.get(),
+                self.entry_typ.get(),
+                self.entry_cena.get(),
+                self.entry_parametr1.get(),
+                self.entry_parametr2.get(),
+                self.entry_parametr3.get()
+            )
+            self.parent.add_part(part_data)
+            self.destroy()
+
+    class EditItemDialog(tk.Toplevel):
+        def __init__(self, parent, item_data):
+            super().__init__(parent)
+            self.parent = parent
+            self.item_id = item_data[0]
+            self.create_widgets(item_data)
+
+        def create_widgets(self, item_data):
+            self.geometry("600x200")
+            self.title("Edytuj część")
+
+            frame = ttk.Frame(self)
+            frame.pack(padx=10, pady=10)
+
+            # Pola do wprowadzania danych z wstępnie załadowanymi danymi
+            ttk.Label(frame, text="Nazwa:").grid(row=0, column=0, padx=5, pady=5)
+            self.entry_nazwa = ttk.Entry(frame)
+            self.entry_nazwa.insert(0, item_data[1])
+            self.entry_nazwa.grid(row=0, column=1, padx=5, pady=5)
+
+            ttk.Label(frame, text="Typ:").grid(row=0, column=2, padx=5, pady=5)
+            self.entry_typ = ttk.Entry(frame)
+            self.entry_typ.insert(0, item_data[2])
+            self.entry_typ.grid(row=0, column=3, padx=5, pady=5)
+
+            ttk.Label(frame, text="Cena:").grid(row=1, column=0, padx=5, pady=5)
+            self.entry_cena = ttk.Entry(frame)
+            self.entry_cena.insert(0, item_data[3])
+            self.entry_cena.grid(row=1, column=1, padx=5, pady=5)
+
+            ttk.Label(frame, text="Parametr1:").grid(row=1, column=2, padx=5, pady=5)
+            self.entry_parametr1 = ttk.Entry(frame)
+            self.entry_parametr1.insert(0, item_data[4])
+            self.entry_parametr1.grid(row=1, column=3, padx=5, pady=5)
+
+            ttk.Label(frame, text="Parametr2:").grid(row=2, column=0, padx=5, pady=5)
+            self.entry_parametr2 = ttk.Entry(frame)
+            self.entry_parametr2.insert(0, item_data[5])
+            self.entry_parametr2.grid(row=2, column=1, padx=5, pady=5)
+
+            ttk.Label(frame, text="Parametr3:").grid(row=2, column=2, padx=5, pady=5)
+            self.entry_parametr3 = ttk.Entry(frame)
+            self.entry_parametr3.insert(0, item_data[6])
+            self.entry_parametr3.grid(row=2, column=3, padx=5, pady=5)
+
+            ttk.Button(self, text="Zapisz zmiany", command=self.edit_part).pack(pady=10)
+        def edit_part(self):
+            updated_data = (
+                self.entry_nazwa.get(),
+                self.entry_typ.get(),
+                self.entry_cena.get(),
+                self.entry_parametr1.get(),
+                self.entry_parametr2.get(),
+                self.entry_parametr3.get()
+            )
+            self.parent.edit_part(self.item_id, updated_data)
+            self.destroy()
+    # Możesz dodać dodatkowe metody, które będą obsługiwać funkcjonalności jak wyszukiwanie, eksport danych itp.
+###################################################################################################################
+
+######################################################################
+class TasksModule(ttk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+
+        self.create_tasks_table()
+        self.create_control_panel()
+        self.load_tasks_data
+    def create_tasks_table(self):
+        columns = ('ID', 'Nazwa Zadania', 'Opis', 'Termin Wykonania', 'Priorytet')
+        self.tree = ttk.Treeview(self, columns=columns, show='headings', style="Custom.Treeview.Heading")
+        for col in columns:
+            self.tree.heading(col, text=col)
+            self.tree.column(col, width=150)
+        self.tree.grid(row=0, column=0, sticky='nsew')
+        self.tree_scroll = ttk.Scrollbar(self, orient="vertical", command=self.tree.yview)
+        self.tree_scroll.grid(row=0, column=1, sticky='ns')
+        self.tree.configure(yscrollcommand=self.tree_scroll.set)
+
+    def create_control_panel(self):
+        control_frame = ttk.Frame(self)
+        control_frame.grid(row=1, column=0, columnspan=2, sticky='ew', padx=10, pady=10)
+        ttk.Button(control_frame, text="Dodaj Zadanie", style="Accent.TButton", command=self.open_add_dialog).pack(side='left')
+        ttk.Button(control_frame, text="Edytuj Zadanie", style="Accent.TButton", command=self.open_edit_dialog).pack(side='left', padx=10)
+        ttk.Button(control_frame, text="Usuń Zadanie", style="Accent.TButton", command=self.open_delete_dialog).pack(side='left')
+        # Dodatkowe widgety, 
+        # Dodawanie pola wyszukiwania i przycisku
+        search_label = ttk.Label(control_frame, text="Wyszukaj: ")
+        search_label.pack(side='left', padx=10, pady=10)
+        self.search_var = tk.StringVar()
+        search_entry = ttk.Entry(control_frame, textvariable=self.search_var)
+        search_entry.pack(side='left', fill='x', expand=True)
+        ttk.Button(control_frame, text="Szukaj", style="Accent.TButton", 
+                   command=lambda: self.search_task(self.search_var.get())).pack(side='left')
+    def load_tasks_data(self):
+        self.tree.delete(*self.tree.get_children())
+        conn = sqlite3.connect('warehouse_management.db')
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM Zadania')
+        rows = cursor.fetchall()
+        for row in rows:
+            self.tree.insert('', 'end', values=row)
+        conn.close()
+    def add_task(self, task_data):
+        conn = sqlite3.connect('warehouse_management.db')
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO Zadania (Nazwa_Zadania, Opis, Termin_Wykonania, Priorytet) VALUES (?, ?, ?, ?)', task_data)
+        conn.commit()
+        conn.close()
+        self.load_tasks_data()
+    def edit_task(self, task_id, updated_data):
+        conn = sqlite3.connect('warehouse_management.db')
+        cursor = conn.cursor()
+        cursor.execute('UPDATE Zadania SET Nazwa_Zadania = ?, Opis = ?, Termin_Wykonania = ?, Priorytet = ? WHERE ID = ?', (*updated_data, task_id))
+        conn.commit()
+        conn.close()
+        self.load_tasks_data()
+    def delete_task(self, item_id):
+        conn = sqlite3.connect('warehouse_management.db')
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM Zadania WHERE ID = ?', (item_id,))
+        conn.commit()
+        conn.close()
+        self.load_tasks_data()
+    def search_task(self, search_query):
+        self.tree.delete(*self.tree.get_children())
+        conn = sqlite3.connect('warehouse_management.db')
+        cursor = conn.cursor()
+        query = """SELECT * FROM Zadania WHERE 
+                Nazwa_Zadania LIKE ? OR 
+                Opis LIKE ? OR 
+                Termin_Wykonania LIKE ? OR 
+                Priorytet LIKE ?"""
+        params = ('%' + search_query + '%',) * 4  # Cztery razy ten sam parametr
+        cursor.execute(query, params)
+        rows = cursor.fetchall()
+        for row in rows:
+            self.tree.insert('', 'end', values=row)
+        conn.close()
+    def open_add_dialog(self):
+        dialog = self.AddTaskDialog(self)
+        self.wait_window(dialog)
+
+    def open_edit_dialog(self):
+        selected_item = self.tree.focus()
+        if not selected_item:
+            return  # Brak zaznaczonego elementu
+
+        item_data = self.tree.item(selected_item, 'values')
+        dialog = self.EditTaskDialog(self, item_data)
+        self.wait_window(dialog)
+
+    def open_delete_dialog(self):
+        selected_item = self.tree.focus()
+        if not selected_item:
+            return  # Brak zaznaczonego elementu
+
+        item_id = self.tree.item(selected_item, 'values')[0]
+        self.delete_task(item_id)
+    class AddTaskDialog(tk.Toplevel):
+        def __init__(self, parent):
+            super().__init__(parent)
+            self.parent = parent
+            self.create_widgets()
+            
+
+        def create_widgets(self):
+            #self.geometry("600x100")  # Zwiększona szerokość, aby pomieścić pola poziomo
+            self.title("Dodaj Zadanie")
+
+            frame = ttk.Frame(self)
+            frame.pack(padx=10, pady=10)
+          
+            # Nazwa Zadania
+            ttk.Label(frame, text="Nazwa Zadania:").pack(side='left')
+            self.entry_task_name = ttk.Entry(frame)
+            self.entry_task_name.pack(side='left', padx=5)
+
+            # Opis
+            ttk.Label(frame, text="Opis:").pack(side='left')
+            self.entry_description = ttk.Entry(frame)
+            self.entry_description.pack(side='left', padx=5)
+
+            # Termin Wykonania
+            ttk.Label(frame, text="Termin Wykonania:").pack(side='left')
+            self.entry_deadline = ttk.Entry(frame)
+            self.entry_deadline.pack(side='left', padx=5)
+
+            # Priorytet
+            ttk.Label(frame, text="Priorytet:").pack(side='left')
+            self.entry_priority = ttk.Entry(frame)
+            self.entry_priority.pack(side='left', padx=5)
+
+            ttk.Button(self, text="Dodaj", command=self.add_task).pack(pady=10)
+        # def add_task_callback(self):
+        #     task_data = (
+        #         self.entry_task_name.get(),
+        #         self.entry_description.get(),
+        #         self.entry_deadline.get(),
+        #         self.entry_priority.get()
+        #     )
+        #     self.parent.add_task(task_data)
+        #     self.destroy()
+        def add_task(self):
+            task_data = (
+                self.entry_task_name.get(),
+                self.entry_description.get(),
+                self.entry_deadline.get(),
+                self.entry_priority.get()
+            )
+            self.parent.add_task(task_data)  # Przekazanie danych do klasy nadrzędnej
+            self.destroy()
+    class EditTaskDialog(tk.Toplevel):
+        def __init__(self, parent, task_data):
+            super().__init__(parent)
+            self.parent = parent
+            self.task_id = task_data[0]
+            self.create_widgets(task_data)
+
+        def create_widgets(self, task_data):
+            #self.geometry("600x100")  # Dostosowany rozmiar dla poziomego układu
+            self.title("Edytuj Zadanie")
+
+            frame = ttk.Frame(self)
+            frame.pack(padx=10, pady=10)
+
+            # Nazwa Zadania
+            ttk.Label(frame, text="Nazwa Zadania:").pack(side='left')
+            self.entry_task_name = ttk.Entry(frame)
+            self.entry_task_name.insert(0, task_data[1])
+            self.entry_task_name.pack(side='left', padx=5)
+
+            # Opis
+            ttk.Label(frame, text="Opis:").pack(side='left')
+            self.entry_description = ttk.Entry(frame)
+            self.entry_description.insert(0, task_data[2])
+            self.entry_description.pack(side='left', padx=5)
+
+            # Termin Wykonania
+            ttk.Label(frame, text="Termin Wykonania:").pack(side='left')
+            self.entry_deadline = ttk.Entry(frame)
+            self.entry_deadline.insert(0, task_data[3])
+            self.entry_deadline.pack(side='left', padx=5)
+
+            # Priorytet
+            ttk.Label(frame, text="Priorytet:").pack(side='left')
+            self.entry_priority = ttk.Entry(frame)
+            self.entry_priority.insert(0, task_data[4])
+            self.entry_priority.pack(side='left', padx=5)
+
+            ttk.Button(self, text="Zapisz zmiany", command=self.edit_task).pack(pady=10)
+
+        def edit_task(self):
+            updated_data = (
+                self.entry_task_name.get(),
+                self.entry_description.get(),
+                self.entry_deadline.get(),
+                self.entry_priority.get()
+            )
+            self.parent.edit_task(self.task_id, updated_data)
+            self.destroy()
+    
+    
+        # Metody load_tasks_data, add_task, edit_task, delete_task, search_task będą zaimplementowane później
+        # Możesz dodać dodatkowe metody, które będą obsługiwać funkcjon alności jak wyszukiwanie, eksport danych itp.
+##########################################################################################################
+ ##########################################################################   
+class RepairScheduleModule(ttk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+
+        self.create_schedule_table()
+        self.create_control_panel()
+        self.load_schedule_data()
+
+    def create_schedule_table(self):
+        columns = ('ID', 'ID Maszyny', 'Serwisant', 'Data Przeglądu', 'Data Naprawy', 'Stan Maszyny')
+        self.tree = ttk.Treeview(self, columns=columns, show='headings', style="Custom.Treeview.Heading")
+        for col in columns:
+            self.tree.heading(col, text=col)
+            self.tree.column(col, width=100)
+        self.tree.grid(row=0, column=0, sticky='nsew')
+        self.tree_scroll = ttk.Scrollbar(self, orient="vertical", command=self.tree.yview)
+        self.tree_scroll.grid(row=0, column=1, sticky='ns')
+        self.tree.configure(yscrollcommand=self.tree_scroll.set)
+
+    def create_control_panel(self):
+        control_frame = ttk.Frame(self)
+        control_frame.grid(row=1, column=0, columnspan=2, sticky='ew', padx=10, pady=10)
+
+        ttk.Button(control_frame, text="Dodaj Naprawę", style="Accent.TButton", command=self.open_add_dialog).pack(side='left')
+        ttk.Button(control_frame, text="Edytuj Naprawę", style="Accent.TButton", command=self.open_edit_dialog).pack(side='left', padx=10)
+        ttk.Button(control_frame, text="Usuń Naprawę", style="Accent.TButton", command=self.open_delete_dialog).pack(side='left')
+
+        # Dodawanie pola wyszukiwania i przycisku
+        self.search_var = tk.StringVar()
+        search_entry = ttk.Entry(control_frame, textvariable=self.search_var)
+        search_entry.pack(side='left', fill='x', expand=True)
+        ttk.Button(control_frame, text="Szukaj", style="Accent.TButton", 
+                   command=lambda: self.search_repair(self.search_var.get())).pack(side='left')
+        
+    def open_add_dialog(self):
+        dialog = self.AddRepairDialog(self)
+        self.wait_window(dialog)
+        self.load_schedule_data()
+
+    def open_edit_dialog(self):
+        selected_item = self.tree.focus()
+        if not selected_item:
+            return  # Brak zaznaczonego elementu
+
+        item_data = self.tree.item(selected_item, 'values')
+        dialog = self.EditRepairDialog(self, item_data)
+        self.wait_window(dialog)
+        self.load_schedule_data()
+    def open_delete_dialog(self):
+        selected_item = self.tree.focus()
+        if not selected_item:
+            return  # Brak zaznaczonego elementu
+
+        item_id = self.tree.item(selected_item, 'values')[0]
+        self.delete_repair(item_id)
+        self.load_schedule_data()
+
+    def load_schedule_data(self):
+        self.tree.delete(*self.tree.get_children())
+        conn = sqlite3.connect('warehouse_management.db')
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM Terminarz_Napraw')
+        rows = cursor.fetchall()
+        for row in rows:
+            self.tree.insert('', 'end', values=row)
+        conn.close()
+
+    def search_repair(self, search_query):
+        self.tree.delete(*self.tree.get_children())
+        conn = sqlite3.connect('warehouse_management.db')
+        cursor = conn.cursor()
+        query = """SELECT * FROM Terminarz_Napraw WHERE 
+                   ID_Maszyny LIKE ? OR 
+                   Serwisant LIKE ? OR 
+                   Data_Przegladu LIKE ? OR 
+                   Data_Naprawy LIKE ? OR 
+                   Stan_Maszyny LIKE ?"""
+        cursor.execute(query, ('%' + search_query + '%',) * 5)
+        rows = cursor.fetchall()
+        for row in rows:
+            self.tree.insert('', 'end', values=row)
+        conn.close()
+    def add_repair(self, repair_data):
+        conn = sqlite3.connect('warehouse_management.db')
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO Terminarz_Napraw (ID_Maszyny, Serwisant, Data_Przegladu, Data_Naprawy, Stan_Maszyny) VALUES (?, ?, ?, ?, ?)', repair_data)
+        conn.commit()
+        conn.close()
+        self.load_repair_schedule_data()
+
+    def edit_repair(self, repair_id, updated_data):
+        conn = sqlite3.connect('warehouse_management.db')
+        cursor = conn.cursor()
+        cursor.execute('UPDATE Terminarz_Napraw SET ID_Maszyny = ?, Serwisant = ?, Data_Przegladu = ?, Data_Naprawy = ?, Stan_Maszyny = ? WHERE ID = ?', updated_data + (repair_id,))
+        conn.commit()
+        conn.close()
+        self.load_repair_schedule_data()
+    def delete_repair(self, repair_id):
+        conn = sqlite3.connect('warehouse_management.db')
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM Terminarz_Napraw WHERE ID = ?', (repair_id,))
+        conn.commit()
+        conn.close()
+        self.load_schedule_data()
+
+    
+    class AddRepairDialog(tk.Toplevel):
+        def __init__(self, parent):
+            super().__init__(parent)
+            self.parent = parent
+            self.create_widgets()
+
+        def create_widgets(self):
+            #self.geometry("800x100")
+            self.title("Dodaj Naprawę")
+            frame = ttk.Frame(self)
+            frame.pack(padx=10, pady=10)
+
+            # Pola do wprowadzania danych
+            ttk.Label(frame, text="ID Maszyny:").pack(side='left')
+            self.entry_machine_id = ttk.Entry(frame)
+            self.entry_machine_id.pack(side='left', padx=5)
+
+            ttk.Label(frame, text="Serwisant:").pack(side='left')
+            self.entry_serviceman = ttk.Entry(frame)
+            self.entry_serviceman.pack(side='left', padx=5)
+
+            ttk.Label(frame, text="Data Przeglądu:").pack(side='left')
+            self.entry_review_date = ttk.Entry(frame)
+            self.entry_review_date.pack(side='left', padx=5)
+
+            ttk.Label(frame, text="Data Naprawy:").pack(side='left')
+            self.entry_repair_date = ttk.Entry(frame)
+            self.entry_repair_date.pack(side='left', padx=5)
+
+            ttk.Label(frame, text="Stan Maszyny:").pack(side='left')
+            self.entry_machine_status = ttk.Entry(frame)
+            self.entry_machine_status.pack(side='left', padx=5)
+
+            ttk.Button(self, text="Dodaj", command=self.add_repair).pack(pady=10)
+
+        def add_repair(self):
+            repair_data = (
+                self.entry_machine_id.get(),
+                self.entry_serviceman.get(),
+                self.entry_review_date.get(),
+                self.entry_repair_date.get(),
+                self.entry_machine_status.get()
+            )
+            
+            # Dodawanie danych naprawy do bazy danych
+            conn = sqlite3.connect('warehouse_management.db')
+            cursor = conn.cursor()
+            cursor.execute('''
+                INSERT INTO Terminarz_Napraw (ID_Maszyny, Serwisant, Data_Przegladu, Data_Naprawy, Stan_Maszyny)
+                VALUES (?, ?, ?, ?, ?)
+            ''', repair_data)
+            conn.commit()
+            conn.close()
+
+            # Odświeżenie danych w module głównym
+            self.parent.load_schedule_data()
+
+            self.destroy()
+
+        def open_delete_dialog(self):
+            selected_item = self.tree.focus()
+            if not selected_item:
+                return  # Brak zaznaczonego elementu
+
+            item_id = self.tree.item(selected_item, 'values')[0]
+            conn = sqlite3.connect('warehouse_management.db')
+            cursor = conn.cursor()
+            cursor.execute('DELETE FROM Terminarz_Napraw WHERE ID = ?', (item_id,))
+            conn.commit()
+            conn.close()
+
+            self.load_schedule_data()
+        def edit_repair(self):
+            updated_data = (
+                self.entry_machine_id.get(),
+                self.entry_serviceman.get(),
+                self.entry_review_date.get(),
+                self.entry_repair_date.get(),
+                self.entry_machine_status.get()
+            )
+            
+            conn = sqlite3.connect('warehouse_management.db')
+            cursor = conn.cursor()
+            cursor.execute('''
+                UPDATE Terminarz_Napraw
+                SET ID_Maszyny = ?, Serwisant = ?, Data_Przegladu = ?, Data_Naprawy = ?, Stan_Maszyny = ?
+                WHERE ID = ?
+            ''', updated_data + (self.task_id,))
+            conn.commit()
+            conn.close()
+
+            self.parent.load_schedule_data()
+
+            self.destroy()
+    class EditRepairDialog(tk.Toplevel):
+        def __init__(self, parent, item_data):
+            super().__init__(parent)
+            self.parent = parent
+            self.repair_id = item_data[0]  # ID naprawy
+            self.create_widgets(item_data)
+
+        def create_widgets(self, item_data):
+            #self.geometry("800x100")
+            self.title("Edytuj Naprawę")
+            frame = ttk.Frame(self)
+            frame.pack(padx=10, pady=10)
+
+            # Pola do wprowadzania danych, z wstępnie załadowanymi danymi
+            ttk.Label(frame, text="ID Maszyny:").pack(side='left')
+            self.entry_machine_id = ttk.Entry(frame)
+            self.entry_machine_id.insert(0, item_data[1])  # Wstępne załadowanie danych
+            self.entry_machine_id.pack(side='left', padx=5)
+
+            ttk.Label(frame, text="Serwisant:").pack(side='left')
+            self.entry_serviceman = ttk.Entry(frame)
+            self.entry_serviceman.insert(0, item_data[2])
+            self.entry_serviceman.pack(side='left', padx=5)
+
+            ttk.Label(frame, text="Data Przeglądu:").pack(side='left')
+            self.entry_review_date = ttk.Entry(frame)
+            self.entry_review_date.insert(0, item_data[3])
+            self.entry_review_date.pack(side='left', padx=5)
+
+            ttk.Label(frame, text="Data Naprawy:").pack(side='left')
+            self.entry_repair_date = ttk.Entry(frame)
+            self.entry_repair_date.insert(0, item_data[4])
+            self.entry_repair_date.pack(side='left', padx=5)
+
+            ttk.Label(frame, text="Stan Maszyny:").pack(side='left')
+            self.entry_machine_status = ttk.Entry(frame)
+            self.entry_machine_status.insert(0, item_data[5])
+            self.entry_machine_status.pack(side='left', padx=5)
+
+            ttk.Button(self, text="Zapisz zmiany", command=self.edit_repair).pack(pady=10)
+
+        def edit_repair(self):
+            updated_data = (
+                self.entry_machine_id.get(),
+                self.entry_serviceman.get(),
+                self.entry_review_date.get(),
+                self.entry_repair_date.get(),
+                self.entry_machine_status.get()
+            )
+
+            # Aktualizowanie danych naprawy w bazie danych
+            conn = sqlite3.connect('warehouse_management.db')
+            cursor = conn.cursor()
+            cursor.execute('''
+                UPDATE Terminarz_Napraw
+                SET ID_Maszyny = ?, Serwisant = ?, Data_Przegladu = ?, Data_Naprawy = ?, Stan_Maszyny = ?
+                WHERE ID = ?
+            ''', updated_data + (self.repair_id,))
+            conn.commit()
+            conn.close()
+
+            # Odświeżenie danych w module głównym
+            self.parent.load_schedule_data()
+
+            self.destroy()
+
+    # Możesz dodać dodatkowe metody, które będą obsługiwać funkcjonalności jak wyszukiwanie, eksport danych itp.
+#################################################################################################################
+class ReportsModule(ttk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent)
+
+        # Przyciski do generowania raportów
+        ttk.Button(self, text="Generuj Raport Stanu Magazynu", command=self.generate_inventory_report).pack(pady=10)
+        ttk.Button(self, text="Generuj Raport Maszyn", command=self.generate_machinery_report).pack(pady=10)
+
+    def generate_inventory_report(self):
+        # Logika generowania raportu stanu magazynu
+        filename = filedialog.asksaveasfilename(defaultextension=".csv", filetypes=[("CSV files", "*.csv")])
+        if filename:
+            self.export_to_csv('SELECT * FROM Magazyn', filename)
+
+    def generate_machinery_report(self):
+        # Logika generowania raportu maszyn
+        filename = filedialog.asksaveasfilename(defaultextension=".csv", filetypes=[("CSV files", "*.csv")])
+        if filename:
+            self.export_to_csv('SELECT * FROM Maszyny', filename)
+
+    def export_to_csv(self, query, filename):
+        conn = sqlite3.connect('warehouse_management.db')
+        cursor = conn.cursor()
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        headers = [description[0] for description in cursor.description]
+
+        with open(filename, mode='w', newline='', encoding='utf-8') as file:
+            writer = csv.writer(file)
+            writer.writerow(headers)
+            writer.writerows(rows)
+
+        conn.close()
+############################################################################################################
+class Application(ttk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.modules = {}
+        self.current_module = None
+        initialize_styles()
+        self.create_menu(parent)
+        self.create_sidebar()
+        self.init_modules()
+
+    def create_menu(self, root):
+        # Tworzenie głównego menu
+        menu_bar = Menu(root)
+        root.config(menu=menu_bar)
+
+        # Menu użytkownika
+        user_menu = Menu(menu_bar, tearoff=0)
+        menu_bar.add_cascade(label="Użytkownik", menu=user_menu)
+        user_menu.add_command(label="Właściciel", command=self.user_owner)
+        user_menu.add_command(label="Kierownik", command=self.user_manager)
+        user_menu.add_command(label="Automatyk", command=self.user_technician)
+
+        # Menu widoku i zmiany motywu
+        view_menu = Menu(menu_bar, tearoff=0)
+        menu_bar.add_cascade(label="Widok", menu=view_menu)
+        theme_menu = Menu(view_menu, tearoff=0)
+        view_menu.add_cascade(label="Motyw", menu=theme_menu)
+        theme_menu.add_command(label="Adapta", command=lambda: change_theme(root, "adapta"))
+        theme_menu.add_command(label="Equilux", command=lambda: change_theme(root, "equilux"))
+
+        # Menu pomocy
+        help_menu = Menu(menu_bar, tearoff=0)
+        menu_bar.add_cascade(label="Pomoc", menu=help_menu)
+        help_menu.add_command(label="O aplikacji", command=self.about)
+        help_menu.add_command(label="FAQ", command=self.faq)
+        help_menu.add_command(label="Przewodnik użytkowania", command=self.user_guide)
+
+        # Menu konfiguracji
+        config_menu = Menu(menu_bar, tearoff=0)
+        menu_bar.add_cascade(label="Konfiguracja", menu=config_menu)
+        config_menu.add_command(label="Połączenie", command=self.connection_settings)
+
+    # Funkcje callback dla różnych opcji menu
+    def user_owner(self):
+        # Logika dla opcji "Właściciel"
+        pass
+
+    def user_manager(self):
+        # Logika dla opcji "Kierownik"
+        pass
+
+    def user_technician(self):
+        # Logika dla opcji "Automatyk"
+        pass
+
+    def about(self):
+        # Wyświetlenie informacji o aplikacji
+        pass
+
+    def faq(self):
+        # Wyświetlenie FAQ
+        pass
+
+    def user_guide(self):
+        # Wyświetlenie przewodnika użytkowania
+        pass
+
+    def connection_settings(self):
+        # Ustawienia połączenia
+        pass
 
    
+    def create_sidebar(self):
+        sidebar = ttk.Frame(self)
+        sidebar.pack(side="left", fill="y", expand=False)
 
-    # Create buttons and calendar for sub-options
-    for opt in options_frame:
-         if opt == "Kalendarz":
-                cal = Calendar(options_frame, selectmode='day', year=2023, month=11, day=27, width=200, height=200)
-                cal.pack(side='left', padx=50, pady=50)  # Tutaj dostosuj marginesy i położenie
-         else:
-                ttk.Button(options_frame, text=opt).pack(side='left', padx=10, pady=10)
-# Funkcje dla przycisków w sekcji Maszyny
-def add_machine():
-    # Logika dodawania maszyny
-    pass
+        ttk.Button(sidebar, text="Magazyn", style="Accent.TButton",command=lambda: self.show_module("Magazyn")).pack(fill="x")
+        ttk.Button(sidebar, text="Katalog Części", style="Accent.TButton" ,command=lambda: self.show_module("Katalog Części")).pack(fill="x")
+        ttk.Button(sidebar, text="Raporty", style="Accent.TButton",command=lambda: self.show_module("Raporty")).pack(fill="x")
+        ttk.Button(sidebar, text="Zadania", style="Accent.TButton",command=lambda: self.show_module("Zadania")).pack(fill="x")
+        ttk.Button(sidebar, text="Terminarz Napraw", style="Accent.TButton" ,command=lambda: self.show_module("Terminarz Napraw")).pack(fill="x")
 
-def remove_machine():
-    # Logika usuwania maszyny
-    pass
+    def init_modules(self):
+        self.modules["Magazyn"] = WarehouseModule(self)
+        self.modules["Katalog Części"] = PartsCatalogModule(self)
+        self.modules["Raporty"] = ReportsModule(self)
+        self.modules["Zadania"] = TasksModule(self)
+        self.modules["Terminarz Napraw"] = RepairScheduleModule(self)
 
-# Funkcje dla przycisków w sekcji Dzienik naparw
-def add_review():
-    # Logika dodawania przeglądu
-    pass
+    def show_module(self, module_name):
+        if self.current_module:
+            self.current_module.pack_forget()
+        self.current_module = self.modules[module_name]
+        self.current_module.pack(side="right", fill="both", expand=True)
 
-def edit_review():
-    # Logika edytowania przeglądu
-    pass
+################################################################################
+    
 
-# Funkcje dla przycisków w sekcji Użytkownik
-def add_user():
-    # Logika dodawania użytkownika
-    pass
+def main():
+    root = ThemedTk(theme="adapta")  # Wybierz motyw, który wspiera zaokrąglone rogi
+    initialize_styles()
+    root.title("Aplikacja Zarządzania Magazynem")
+    root.geometry("1200x600")
+    app = Application(root)
+    app.pack(side="right", fill="both", expand=True)
+    initialize_database()
+    root.mainloop()
+    
 
-def remove_user():
-    # Logika usuwania użytkownika
-    pass
-
-# Funkcje dla przycisków w sekcji Zadania
-def add_task():
-    # Logika dodawania zadania
-    pass
-
-def remove_task():
-    # Logika usuwania zadania
-    pass                
-   
-# Create buttons in the sidebar
-buttons = ["Magazyn", "Maszyny", "Dziennik Napraw", "Zadania"]
-for button in buttons:
-    ttk.Button(sidebar, text=button, command=lambda b=button: update_main_area(b)).pack(fill='x', padx=25, pady=20)
-
-# Create a frame for the second-level options
-options_frame = tk.Frame(root, bg='#ffffff')
-options_frame.pack(fill='x', side='top')
-
-# Create a main area for displaying information
-main_area = tk.Frame(root, bg='#ffffff')
-main_area.pack(fill='both', expand=True)
-
-root.mainloop()
+if __name__ == "__main__":
+    main()
